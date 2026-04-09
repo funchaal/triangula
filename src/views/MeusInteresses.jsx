@@ -204,7 +204,7 @@ function MeusInteresses() {
             </div>
 
             {showForm && (
-              <div className="bg-slate-900/60 border border-blue-500/30 rounded-2xl p-4 sm:p-6 md:p-8 shadow-[0_0_50px_rgba(59,130,246,0.1)] animate-in fade-in slide-in-from-top-4 duration-300">
+              <div className="bg-slate-900/60 border border-blue-500/30 rounded-2xl p-4 sm:p-6 md:p-8 animate-in fade-in slide-in-from-top-4 duration-300">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
                   <div className="space-y-4">
                     <SectionTitle icon={<MapPin size={16} />} label="Onde você quer ir?" />

@@ -19,13 +19,13 @@ export const COLORS = {
   nodeStateBorder: [157, 0, 255, 255],
 
   ripple: [204, 150, 255],
-  label:  [148, 163, 184, 210],
-  labelRegion: [251, 191, 36, 170],
-  labelState:  [56, 189, 248, 150],
+  label:  [120, 120, 120, 255],
+  labelRegion: [120, 120, 120, 255],
+  labelState:  [120, 120, 120, 255],
   labelActive: [255, 255, 255, 255],
 };
 
-export const INITIAL_VIEW    = { longitude: -44.0, latitude: -22.0, zoom: 6.5, pitch: 50, bearing: 0 };
+export const INITIAL_VIEW    = { longitude: -44.0, latitude: -22.0, zoom: 5.5, pitch: 50, bearing: 0 };
 export const GROW_DURATION   = 5000;
 export const HOLD_DURATION   = 500;
 export const SHRINK_DURATION = 2250;

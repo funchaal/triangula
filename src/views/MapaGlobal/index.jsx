@@ -286,14 +286,14 @@ function MapaGlobal() {
       data: scatterData,
       getPosition:    d => d.position,
       getText:        d => d.name,
-      getSize:        d => d.kind === 'base' ? 12 : 10,
+      getSize:        d => d.kind === 'base' ? 10 : 12,
       getColor: d => {
         const isSel = selection?.type === 'base' && selection.key === d.key;
         if (isSel || hoveredNodeKey === d.key) return COLORS.labelActive;
         return COLORS.label;
       },
       fontFamily:     "monospace",
-      fontWeight:     "bold",
+      fontWeight:     "normal",
       getPixelOffset: [0, -16],
       billboard:      true,
       characterSet: 'auto', 
@@ -317,10 +317,10 @@ function MapaGlobal() {
       </DeckGL>
 
       {/* Header Atualizado */}
-      <div className="absolute top-0 left-0 right-0 z-10 pl-16 pr-4 lg:pl-6 pt-4 pb-10 bg-gradient-to-b from-slate-950/90 via-slate-950/40 to-transparent pointer-events-none flex items-start justify-between">
+      <div className="absolute top-0 left-0 right-0 z-10 pl-16 pr-4 lg:pl-6 pt-4 pb-10 bg-gradient-to-b from-slate-950/90 via-slate-950/40 to-transparent pointer-events-auto flex items-start justify-between">
         
         {/* Bloco de Título */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 pointer-events-auto">
           <div className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center backdrop-blur-sm">
             <Layers size={18} className="text-blue-400" />
           </div>
@@ -334,7 +334,7 @@ function MapaGlobal() {
         <button
           type="button"
           onClick={() => navigate('/interests')}
-          className="pointer-events-auto hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-full shadow-[0_4px_15px_rgba(37,99,235,0.4)] transition-all active:scale-95 font-medium text-sm"
+          className="pointer-events-auto hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-full transition-all active:scale-95 font-medium text-sm"
         >
           <Plus size={16} strokeWidth={2.5} />
           <span>Cadastrar novo interesse</span>
@@ -343,11 +343,11 @@ function MapaGlobal() {
       </div>
 
       {/* Botão Novo Interesse - Mobile */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 md:hidden pointer-events-auto w-max">
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 md:hidden pointer-events-auto w-max">
         <button
           type="button"
           onClick={() => navigate('/interests')}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-full shadow-[0_4px_15px_rgba(37,99,235,0.4)] border border-blue-400/50 transition-all active:scale-95 font-medium text-sm"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-full border border-blue-400/50 transition-all active:scale-95 font-medium text-sm"
         >
           <Plus size={18} strokeWidth={2.5} />
           <span>Cadastrar novo interesse</span>
