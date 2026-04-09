@@ -296,6 +296,7 @@ function MapaGlobal() {
       fontWeight:     "bold",
       getPixelOffset: [0, -16],
       billboard:      true,
+      characterSet: 'auto', 
       updateTriggers: { getColor: [hoveredNodeKey, selection] },
     }),
 

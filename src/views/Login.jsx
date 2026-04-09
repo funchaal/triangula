@@ -23,6 +23,7 @@ import { selectIsLoggedIn } from "../store/hooks";
 import { TOKEN_KEY } from "../constants";
 
 import Label from '../components/ui/Label';
+import SearchableSelect from '../components/ui/SearchableSelect';
 import {
   selectLocations,
   selectDepartments,
@@ -112,13 +113,13 @@ export default function Login() {
   const isStep2Valid = 
     formData.name.trim() !== '' &&
     formData.user_key.trim().length === 4 &&
-    formData.state_id !== ANY &&
-    formData.region_id !== ANY &&
-    formData.base_id !== ANY &&
-    formData.role_id !== ANY &&
-    formData.role_type_id !== ANY &&
-    formData.department_id !== ANY &&
-    formData.regime_id !== ANY;
+    String(formData.state_id) !== ANY &&
+    String(formData.region_id) !== ANY &&
+    String(formData.base_id) !== ANY &&
+    String(formData.role_id) !== ANY &&
+    String(formData.role_type_id) !== ANY &&
+    String(formData.department_id) !== ANY &&
+    String(formData.regime_id) !== ANY;
 
   const handleChange = (e) => {
     let { name, value } = e.target;
@@ -130,22 +131,20 @@ export default function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleProfileBase = (e) => {
-    const baseId = e.target.value;
-    const loc = locations[baseId];
+  const handleProfileBase = (val) => {
+    const loc = locations[val];
     setFormData(f => ({
-      ...f, base_id: baseId,
-      region_id: baseId !== ANY ? (loc?.region_id ?? ANY) : ANY,
-      state_id:  baseId !== ANY ? (loc?.state_id  ?? ANY) : ANY,
+      ...f, base_id: val,
+      region_id: val !== ANY ? (loc?.region_id ?? ANY) : ANY,
+      state_id:  val !== ANY ? (loc?.state_id  ?? ANY) : ANY,
     }));
   };
 
-  const handleProfileRegion = (e) => {
-    const rid = e.target.value;
-    const reg = regions[rid];
+  const handleProfileRegion = (val) => {
+    const reg = regions[val];
     setFormData(f => ({
-      ...f, base_id: ANY, region_id: rid,
-      state_id: rid !== ANY ? (reg?.state_id ?? ANY) : ANY,
+      ...f, base_id: ANY, region_id: val,
+      state_id: val !== ANY ? (reg?.state_id ?? ANY) : ANY,
     }));
   };
 
@@ -153,20 +152,71 @@ export default function Login() {
     setFormData(f => ({ ...f, base_id: ANY, region_id: ANY, state_id: e.target.value }));
   };
 
+  // Reseta o cargo se mudar o nível (ex: Técnico -> Superior)
+  const handleRoleTypeChange = (e) => {
+    const newType = e.target.value;
+    setFormData(f => {
+      const newForm = { ...f, role_type_id: newType };
+      if (newType !== ANY && f.role_id !== ANY) {
+        const roleDef = roles[f.role_id];
+        const currentTypeId = typeof roleDef === 'object' ? roleDef?.role_type_id : ANY;
+        if (String(currentTypeId) !== String(newType)) {
+          newForm.role_id = ANY;
+        }
+      }
+      return newForm;
+    });
+  };
+
   const basesForProfile = Object.entries(locations || {}).filter(([, l]) => {
-    if (formData.region_id !== ANY) return l.region_id === formData.region_id;
-    if (formData.state_id  !== ANY) return l.state_id  === formData.state_id;
+    if (formData.region_id !== ANY) return String(l.region_id) === String(formData.region_id);
+    if (formData.state_id  !== ANY) return String(l.state_id)  === String(formData.state_id);
     return true;
   });
 
   const regionsForProfile = Object.entries(regions || {}).filter(([, r]) =>
-    formData.state_id === ANY || r.state_id === formData.state_id
+    formData.state_id === ANY || String(r.state_id) === String(formData.state_id)
   );
+
+  const filteredRoles = Object.entries(roles || {})
+    .filter(([, role]) => {
+      const typeId = typeof role === 'object' ? role?.role_type_id : ANY;
+      return formData.role_type_id === ANY || String(typeId) === String(formData.role_type_id);
+    })
+    .sort((a, b) => {
+      const nameA = typeof a[1] === 'string' ? a[1] : (a[1]?.name || "");
+      const nameB = typeof b[1] === 'string' ? b[1] : (b[1]?.name || "");
+      return nameA.localeCompare(nameB);
+    })
+    .map(([id, r]) => ({
+      value: id,
+      label: typeof r === 'string' ? r : (r?.name || "Desconhecido")
+    }));
+
+    const filteredRegionsOpts = regionsForProfile
+    .sort((a, b) => a[1].name.localeCompare(b[1].name))
+    .map(([id, r]) => ({ value: id, label: r.name }));
+
+  const filteredBasesOpts = basesForProfile
+    .sort((a, b) => a[1].name.localeCompare(b[1].name))
+    .map(([id, l]) => ({ value: id, label: l.name }));
+
+  const filteredDeptsOpts = Object.entries(departments || {})
+    .sort((a, b) => {
+      const nameA = typeof a[1] === 'string' ? a[1] : (a[1]?.name || "");
+      const nameB = typeof b[1] === 'string' ? b[1] : (b[1]?.name || "");
+      return nameA.localeCompare(nameB);
+    })
+    .map(([id, d]) => ({ 
+      value: id, 
+      label: typeof d === 'string' ? d : (d?.name || "Desconhecido") 
+    }));
+
+  const searchSelectClasses = "w-full bg-slate-950/50 border border-slate-800 rounded-lg pl-4 pr-10 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 transition-all placeholder:text-slate-600";
 
   const stateOpts  = Object.entries(states || {});
   const deptOpts   = Object.entries(departments || {});
   const regimeOpts = Object.entries(workRegimes || {});
-  const roleOpts   = Object.entries(roles || {});
   const rtOpts     = Object.entries(roleTypes || {});
 
   const handleSubmit = async (e) => {
@@ -198,7 +248,7 @@ export default function Login() {
           name: formData.name,
           user_key: formData.user_key,
           state: formData.state,
-          base_id: formData.base_id !== ANY ? parseInt(formData.base_id) : undefined,
+          base_id: formData.base_id !== ANY ? String(formData.base_id) : undefined,
           region_id: formData.region_id !== ANY ? parseInt(formData.region_id) : undefined,
           state_id: formData.state_id !== ANY ? parseInt(formData.state_id) : undefined,
           role_id: formData.role_id !== ANY ? parseInt(formData.role_id) : undefined,
@@ -226,16 +276,23 @@ export default function Login() {
         }, 0);
       }
     } catch (err) {
+      // TRATAMENTO DE ERRO ROBUSTO (Evita crash de Array do FastAPI 422)
       const detail = err?.data?.detail;
-      if (detail === 'Credenciais inválidas') {
-        setStatus({ type: 'error', message: 'Usuário ou senha incorretos.' });
-      } else if (detail === 'Username já cadastrado') {
-        setStatus({ type: 'error', message: 'Este nome de usuário já está em uso.' });
-      } else if (mode === 'reset') {
-        setStatus({ type: 'error', message: detail || 'O link de redefinição é inválido ou expirou.' });
-      } else {
-        setStatus({ type: 'error', message: detail || 'Erro ao processar solicitação. Tente novamente.' });
+      let errorMessage = 'Erro ao processar solicitação. Tente novamente.';
+
+      if (typeof detail === 'string') {
+        if (detail === 'Credenciais inválidas') errorMessage = 'Usuário ou senha incorretos.';
+        else if (detail === 'Username já cadastrado') errorMessage = 'Este nome de usuário já está em uso.';
+        else errorMessage = detail;
+      } else if (Array.isArray(detail)) {
+        // Trata erro de validação (FastAPI 422 Pydantic)
+        console.error("Erro de validação do Pydantic:", detail);
+        errorMessage = 'Verifique os campos preenchidos. Alguns dados estão inválidos ou faltando.';
+      } else if (mode === 'reset' && !detail) {
+         errorMessage = 'O link de redefinição é inválido ou expirou.';
       }
+
+      setStatus({ type: 'error', message: errorMessage });
     }
   };
 
@@ -261,53 +318,15 @@ export default function Login() {
   return (
     <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center justify-center p-4 py-8 md:py-12 font-sans selection:bg-blue-500/30 overflow-x-hidden overflow-y-auto relative z-0">
       
-      {/* Estilos para customizar e separar a bandeira do input, além de pintar a seta de branco */}
+      {/* Estilos para customizar PhoneInput e SearchableSelect no escuro */}
       <style>{`
-        .PhoneInput {
-          display: flex;
-          align-items: center;
-          gap: 0.1rem; /* Espaçamento entre os dois blocos */
-        }
-        .PhoneInputCountry {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          background-color: rgba(2, 6, 23, 0.5); /* Fundo igual ao input */
-          border: 1px solid #1e293b;
-          border-radius: 0.5rem;
-          padding: 0 0.75rem;
-          height: 42px;
-        }
-        .PhoneInputCountrySelectArrow {
-          /* Pinta a seta de branco */
-          color: white;
-          border-right-color: white;
-          border-bottom-color: white;
-          opacity: 0.7;
-        }
-        .PhoneInputInput {
-          flex: 1;
-          background-color: rgba(2, 6, 23, 0.5);
-          border: 1px solid #1e293b;
-          border-radius: 0.5rem;
-          padding: 0.5rem 1rem;
-          color: #e2e8f0;
-          font-size: 0.875rem;
-          height: 42px;
-          outline: none;
-          transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .PhoneInputInput:focus {
-          border-color: #3b82f6;
-          box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5);
-        }
-        .PhoneInputInput::placeholder {
-          color: #475569;
-        }
-        .PhoneInputCountrySelect option {
-          background-color: #0f172a; /* Fundo slate-900 */
-          color: #e2e8f0; /* Texto claro slate-200 */
-        }
+        .PhoneInput { display: flex; align-items: center; gap: 0.1rem; }
+        .PhoneInputCountry { display: flex; align-items: center; gap: 0.5rem; background-color: rgba(2, 6, 23, 0.5); border: 1px solid #1e293b; border-radius: 0.5rem; padding: 0 0.75rem; height: 42px; }
+        .PhoneInputCountrySelectArrow { color: white; border-right-color: white; border-bottom-color: white; opacity: 0.7; }
+        .PhoneInputInput { flex: 1; background-color: rgba(2, 6, 23, 0.5); border: 1px solid #1e293b; border-radius: 0.5rem; padding: 0.5rem 1rem; color: #e2e8f0; font-size: 0.875rem; height: 42px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+        .PhoneInputInput:focus { border-color: #3b82f6; box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5); }
+        .PhoneInputInput::placeholder { color: #475569; }
+        .PhoneInputCountrySelect option { background-color: #0f172a; color: #e2e8f0; }
       `}</style>
 
       {/* Background Orbs */}
@@ -339,7 +358,6 @@ export default function Login() {
       <div className={`w-full transition-all duration-500 ${mode === 'register' && registerStep === 2 ? 'max-w-4xl' : 'max-w-sm'}`}>
         <div className={`bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-xl animate-in zoom-in-95 duration-300 ${mode === 'register' && registerStep === 2 ? 'p-4 sm:p-6' : 'p-5 sm:p-8'}`}>
           
-          {/* Indicador de Passos */}
           {mode === 'register' && (
             <div className="flex items-center gap-2 mb-6">
               <div className={`h-1.5 flex-1 rounded-full transition-colors ${registerStep >= 1 ? 'bg-blue-500' : 'bg-slate-800'}`} />
@@ -349,7 +367,6 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
-            {/* TELA: ESQUECEU A SENHA */}
             {mode === 'forgot' && (
               <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <p className="text-sm text-slate-300 mb-2 leading-relaxed">
@@ -370,7 +387,6 @@ export default function Login() {
               </div>
             )}
 
-            {/* TELA: REDEFINIR SENHA */}
             {mode === 'reset' && (
               <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="space-y-1.5">
@@ -397,7 +413,6 @@ export default function Login() {
               </div>
             )}
 
-            {/* TELA: LOGIN E PASSO 1 DO REGISTRO */}
             {(mode === 'login' || (mode === 'register' && registerStep === 1)) && (
               <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="space-y-1.5">
@@ -431,7 +446,6 @@ export default function Login() {
 
                     <div className="space-y-1.5">
                       <Label>Telefone / Celular</Label>
-                      {/* Substituto do input antigo com formatação e bandeiras */}
                       <PhoneInput
                         international
                         defaultCountry="BR"
@@ -486,11 +500,10 @@ export default function Login() {
               </div>
             )}
 
-            {/* TELA: PASSO 2 DO REGISTRO (Perfil Profissional) */}
             {mode === 'register' && registerStep === 2 && (
               <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Bloco 1: Dados Pessoais Básicos */}
+                  {/* Bloco 1: Dados Pessoais */}
                   <div className="bg-slate-950/40 border border-slate-800/60 rounded-xl p-3 sm:p-4 space-y-3">
                     <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Identificação</h3>
                     <div className="space-y-3">
@@ -533,7 +546,7 @@ export default function Login() {
                   <div className="bg-slate-950/40 border border-slate-800/60 rounded-xl p-3 sm:p-4 space-y-3">
                     <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Sua Lotação Atual</h3>
                     <div className="space-y-3">
-                        <div className="space-y-1.5">
+                        <div className="space-y-1.5 relative z-50">
                             <Label>Estado</Label>
                             <select name="state_id" value={formData.state_id} onChange={handleProfileState} disabled={formData.base_id !== ANY || formData.region_id !== ANY} className={inputBaseClasses}>
                                 <option className="bg-slate-900 text-slate-200" value={ANY}>- Selecione -</option>
@@ -541,19 +554,26 @@ export default function Login() {
                             </select>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
-                            <div className="space-y-1.5">
+                            <div className="space-y-1.5 relative z-40">
                                 <Label>Região</Label>
-                                <select name="region_id" value={formData.region_id} onChange={handleProfileRegion} disabled={formData.base_id !== ANY} className={inputBaseClasses}>
-                                    <option className="bg-slate-900 text-slate-200" value={ANY}>- Selecione -</option>
-                                    {regionsForProfile.sort((a, b) => a[1].name.localeCompare(b[1].name)).map(([id, r]) => <option className="bg-slate-900 text-slate-200" key={id} value={id}>{r.name}</option>)}
-                                </select>
+                                <SearchableSelect 
+                                  options={filteredRegionsOpts}
+                                  value={formData.region_id}
+                                  onChange={handleProfileRegion}
+                                  disabled={formData.base_id !== ANY}
+                                  inputClassName={searchSelectClasses}
+                                  placeholder="- Selecione -"
+                                />
                             </div>
-                            <div className="space-y-1.5">
+                            <div className="space-y-1.5 relative z-30">
                                 <Label>Base</Label>
-                                <select name="base_id" value={formData.base_id} onChange={handleProfileBase} className={inputBaseClasses}>
-                                    <option className="bg-slate-900 text-slate-200" value={ANY}>- Selecione -</option>
-                                    {basesForProfile.sort((a, b) => a[1].name.localeCompare(b[1].name)).map(([id, l]) => <option className="bg-slate-900 text-slate-200" key={id} value={id}>{l.name}</option>)}
-                                </select>
+                                <SearchableSelect 
+                                  options={filteredBasesOpts}
+                                  value={formData.base_id}
+                                  onChange={handleProfileBase}
+                                  inputClassName={searchSelectClasses}
+                                  placeholder="- Selecione -"
+                                />
                             </div>
                         </div>
                     </div>
@@ -561,31 +581,37 @@ export default function Login() {
                 </div>
 
                 {/* Bloco 3: Perfil */}
-                <div className="bg-slate-950/40 border border-slate-800/60 rounded-xl p-3 sm:p-4 space-y-3">
+                <div className="bg-slate-950/40 border border-slate-800/60 rounded-xl p-3 sm:p-4 space-y-3 relative z-20">
                   <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Perfil Profissional</h3>
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                      <div className="space-y-1.5">
-                          <Label>Cargo / Ênfase</Label>
-                          <select name="role_id" value={formData.role_id} onChange={handleChange} className={inputBaseClasses}>
-                              <option className="bg-slate-900 text-slate-200" value={ANY}>- Selecione -</option>
-                              {roleOpts.map(([id, n]) => <option className="bg-slate-900 text-slate-200" key={id} value={id}>{typeof n === 'string' ? n : n?.name}</option>)}
-                          </select>
-                      </div>
-                      <div className="space-y-1.5">
+                      <div className="space-y-1.5 relative z-[60]">
                           <Label>Nível</Label>
-                          <select name="role_type_id" value={formData.role_type_id} onChange={handleChange} className={inputBaseClasses}>
+                          <select name="role_type_id" value={formData.role_type_id} onChange={handleRoleTypeChange} className={inputBaseClasses}>
                               <option className="bg-slate-900 text-slate-200" value={ANY}>- Selecione -</option>
                               {rtOpts.map(([id, n]) => <option className="bg-slate-900 text-slate-200" key={id} value={id}>{typeof n === 'string' ? n : n?.name}</option>)}
                           </select>
                       </div>
-                      <div className="space-y-1.5">
-                          <Label>Gerência / Depto.</Label>
-                          <select name="department_id" value={formData.department_id} onChange={handleChange} className={inputBaseClasses}>
-                              <option className="bg-slate-900 text-slate-200" value={ANY}>- Selecione -</option>
-                              {deptOpts.map(([id, n]) => <option className="bg-slate-900 text-slate-200" key={id} value={id}>{typeof n === 'string' ? n : n?.name}</option>)}
-                          </select>
+                      <div className="space-y-1.5 relative z-[50]">
+                          <Label>Cargo / Ênfase</Label>
+                          <SearchableSelect 
+                            value={formData.role_id}
+                            onChange={(val) => setFormData(f => ({ ...f, role_id: val }))}
+                            options={filteredRoles}
+                            placeholder={formData.role_type_id === ANY ? "Selecione o nível..." : "Buscar cargo..."}
+                            inputClassName={searchSelectClasses}
+                          />
                       </div>
-                      <div className="space-y-1.5">
+                      <div className="space-y-1.5 relative z-[40]">
+                          <Label>Gerência / Depto.</Label>
+                          <SearchableSelect 
+                            value={formData.department_id}
+                            onChange={(val) => setFormData(f => ({ ...f, department_id: val }))}
+                            options={filteredDeptsOpts}
+                            placeholder="- Selecione -"
+                            inputClassName={searchSelectClasses}
+                          />
+                      </div>
+                      <div className="space-y-1.5 relative z-[30]">
                           <Label>Regime</Label>
                           <select name="regime_id" value={formData.regime_id} onChange={handleChange} className={inputBaseClasses}>
                               <option className="bg-slate-900 text-slate-200" value={ANY}>- Selecione -</option>
@@ -610,7 +636,7 @@ export default function Login() {
             )}
 
             {/* AÇÕES (Botões) */}
-            <div className="pt-2">
+            <div className="pt-2 relative z-0">
                 {mode === 'forgot' ? (
                     <div className="flex flex-col gap-3">
                         <button
