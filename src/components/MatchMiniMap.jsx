@@ -294,7 +294,9 @@ function MatchMiniMap({ match }) {
                             {step.role_id && (
                               <div className="flex flex-col overflow-hidden">
                                 <span className="text-slate-500 text-[9px] uppercase tracking-wider font-bold mb-0.5">Cargo</span>
-                                <span className="text-slate-300 truncate" title={roles[step.role_id] || step.role_id}>{roles[step.role_id] || step.role_id}</span>
+                                <span className="text-slate-300 truncate" title={roles[step.role_id]?.name || step.role_id}>
+                                  {roles[step.role_id]?.name || step.role_id}
+                                </span>
                               </div>
                             )}
                             {step.regime_id && (

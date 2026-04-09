@@ -145,8 +145,8 @@ export default function MapSidebar({ selection, mapData, locations, regions, sta
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-semibold text-slate-200 truncate">{u.name || u.username}</div>
                     {u.name && <div className="text-[10px] text-slate-600 font-mono truncate">{u.username}</div>}
-                    {lbl(roles, u.role_id) && <div className="text-[10px] text-slate-500 truncate">{lbl(roles, u.role_id)}</div>}
-                  </div>
+                    {lbl(roles, u.role_id) && <div className="text-[10px] text-slate-500 truncate">{lbl(roles, u.role_id)?.name}</div>}
+                    </div>
                 </div>
                 {lbl(workRegimes, u.regime_id) && (
                   <div className="text-[10px] text-slate-500 mb-1 flex items-center gap-1">

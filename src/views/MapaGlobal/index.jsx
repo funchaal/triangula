@@ -83,7 +83,7 @@ function MapaGlobal() {
         ...a, 
         phaseOffset: phase, 
         localCycle, 
-        arcPoints: buildArcPoints(src, tgt, 0.2) 
+        arcPoints: buildArcPoints(src, tgt, 0.1) 
       };
     }).filter(Boolean);
   }, [mapData, locations, regions, states]);
@@ -312,7 +312,7 @@ function MapaGlobal() {
         getCursor={({ isHovering }) => isHovering ? "pointer" : "grab"}
         onClick={({ object }) => { if (!object) dispatch(clearSelection()); }}
       >
-        <div style={{ position:'absolute', inset:0, backgroundColor:'rgba(0,40,80,0.15)', pointerEvents:'none', zIndex:1 }} />
+        {/* <div style={{ position:'absolute', inset:0, backgroundColor:'rgba(0,40,80,0.15)', pointerEvents:'none', zIndex:1 }} /> */}
         <MapGL mapStyle={MAP_STYLE} />
       </DeckGL>
 

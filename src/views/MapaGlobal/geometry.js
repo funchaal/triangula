@@ -18,7 +18,8 @@ export function greatCirclePoint(src, tgt, t) {
   const z = A * Math.sin(lat1) + B * Math.sin(lat2);
   const lat = Math.atan2(z, Math.sqrt(x * x + y * y));
   const lon = Math.atan2(y, x);
-  const altitude = Math.sin(t * Math.PI) * 0.5 * (d * 180 / Math.PI) * 111000;
+  const ease = Math.sqrt(1 - (2 * t - 1) ** 2); // equação do círculo unitário
+const altitude = ease * 0.5 * (d * 180 / Math.PI) * 111000;
   return [lon * 180 / Math.PI, lat * 180 / Math.PI, altitude];
 }
 
@@ -35,7 +36,7 @@ export function buildArcPoints(src, tgt, offsetAmount = 0) {
     const t = i / ARC_STEPS;
     const [lng, lat, alt] = greatCirclePoint(src, tgt, t);
     const bulge = Math.sin(t * Math.PI);
-    pts.push([lng + px * offsetAmount * bulge, lat + py * offsetAmount * bulge, alt]);
+pts.push([lng + px * offsetAmount * bulge, lat + py * offsetAmount * bulge, alt]);
   }
   return pts;
 }

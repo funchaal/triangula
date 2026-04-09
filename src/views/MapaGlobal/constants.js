@@ -25,12 +25,12 @@ export const COLORS = {
   labelActive: [255, 255, 255, 255],
 };
 
-export const INITIAL_VIEW    = { longitude: -44.5, latitude: -16.5, zoom: 4.0, pitch: 28, bearing: 0 };
+export const INITIAL_VIEW    = { longitude: -44.0, latitude: -22.0, zoom: 6.5, pitch: 50, bearing: 0 };
 export const GROW_DURATION   = 5000;
-export const HOLD_DURATION   = 1500;
+export const HOLD_DURATION   = 500;
 export const SHRINK_DURATION = 2250;
 export const ACTIVE_DURATION = GROW_DURATION + HOLD_DURATION + SHRINK_DURATION;
 export const PAUSE_DURATION  = ACTIVE_DURATION;
 export const CYCLE_DURATION  = ACTIVE_DURATION * 2;
-export const ARC_STEPS       = 960;
+export const ARC_STEPS       = 1920;
 export const STAGGER_DELAY = 500; // atraso entre arcos saindo do mesmo nó
