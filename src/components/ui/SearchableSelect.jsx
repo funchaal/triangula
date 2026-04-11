@@ -7,7 +7,8 @@ export default function SearchableSelect({
   options, 
   placeholder = "Selecione...", 
   disabled = false,
-  inputClassName = "w-full bg-slate-900 border border-slate-700 rounded-lg pl-3 pr-10 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+  // Ajuste nas cores do input e foco
+  inputClassName = "w-full bg-[#0B1437] border border-white/10 rounded-xl pl-4 pr-10 py-3 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-[#111C44] transition-all placeholder:text-[#A3AED0]/50"
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -52,26 +53,26 @@ export default function SearchableSelect({
           }}
           disabled={disabled}
         />
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-          <ChevronDown size={16} />
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#A3AED0]">
+          <ChevronDown size={18} />
         </div>
       </div>
 
       {isOpen && !disabled && (
-  <div className="absolute z-[100] w-full mt-1 bg-slate-800 border border-slate-700 rounded-lg shadow-xl max-h-60 overflow-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-600">
-      <div
-            className={`px-3 py-2 text-sm cursor-pointer hover:bg-blue-600 hover:text-white transition-colors ${String(value) === "0" ? 'bg-blue-500/20 text-blue-300' : 'text-slate-400'}`}
+        <div className="absolute z-[1] w-full mt-2 bg-[#1B254B] border border-white/10 rounded-xl shadow-2xl max-h-60 overflow-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
+          <div
+            className={`px-4 py-3 text-sm cursor-pointer hover:bg-blue-500 hover:text-white transition-colors ${String(value) === "0" ? 'bg-blue-500/20 text-white' : 'text-[#A3AED0]'}`}
             onClick={() => { onChange("0"); setIsOpen(false); }}
           >
             -
           </div>
           {filteredOptions.length === 0 ? (
-            <div className="px-3 py-2 text-sm text-slate-500">Nenhuma opção encontrada</div>
+            <div className="px-4 py-3 text-sm text-[#A3AED0]/50">Nenhuma opção encontrada</div>
           ) : (
             filteredOptions.map(opt => (
               <div
                 key={opt.value}
-                className={`px-3 py-2 text-sm cursor-pointer hover:bg-blue-600 hover:text-white transition-colors ${String(opt.value) === String(value) ? 'bg-blue-500/20 text-blue-300' : 'text-slate-200'}`}
+                className={`px-4 py-3 text-sm cursor-pointer hover:bg-blue-500 hover:text-white transition-colors ${String(opt.value) === String(value) ? 'bg-blue-500/20 text-white' : 'text-white'}`}
                 onClick={() => {
                   onChange(opt.value);
                   setIsOpen(false);

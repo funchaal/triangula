@@ -5,9 +5,9 @@ import { useInitQuery, useRestoreSessionMutation } from "./services/api";
 import { useAppSelector } from "./store/hooks";
 import { selectIsLoggedIn } from "./store/hooks";
 import { TOKEN_KEY } from "./constants";
-import { Loader2 } from 'lucide-react';
+import LoadingTriangle from './components/ui/LoadingTriangle'; // <-- Importando o novo loader
 
-export default function PermuteApp() {
+export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -45,10 +45,13 @@ export default function PermuteApp() {
 
   if (sessionLoading || initLoading) {
     return (
-      <div className="h-screen w-full bg-slate-950 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
-          <div className="text-slate-400 text-sm font-medium tracking-wide animate-pulse">Iniciando Triangula...</div>
+      <div className="h-screen w-full bg-[#0B1437] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-5">
+          {/* Usando o LoadingTriangle grande para a tela inicial */}
+          <LoadingTriangle size={48} />
+          <div className="text-[#A3AED0] text-sm font-bold uppercase tracking-widest animate-pulse mt-2">
+            Iniciando Triangula...
+          </div>
         </div>
       </div>
     )
@@ -56,17 +59,19 @@ export default function PermuteApp() {
 
   if (initError) {
     return (
-      <div className="h-screen w-full bg-slate-950 flex items-center justify-center">
-        <div className="text-red-400 text-sm">Falha ao conectar com o servidor.</div>
+      <div className="h-screen w-full bg-[#0B1437] flex items-center justify-center">
+        <div className="text-red-400 text-sm font-semibold tracking-wide">
+          Falha ao conectar com o servidor.
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen w-full bg-slate-950 text-slate-200 font-sans flex flex-col md:flex-row overflow-hidden">
+    <div className="h-screen w-full bg-[#0B1437] text-white font-sans flex flex-col md:flex-row overflow-hidden">
       <Sidebar />
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-        <main className="flex-1 overflow-hidden h-full">
+        <main className="flex-1 overflow-hidden h-full relative z-0">
           <Outlet />
         </main>
       </div>

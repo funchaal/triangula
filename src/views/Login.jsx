@@ -10,6 +10,7 @@ import {
   ArrowRight,
   ArrowLeft
 } from 'lucide-react';
+import LoadingTriangle from '../components/ui/LoadingTriangle';
 import { 
   useInitQuery, 
   useLoginMutation, 
@@ -152,7 +153,6 @@ export default function Login() {
     setFormData(f => ({ ...f, base_id: ANY, region_id: ANY, state_id: e.target.value }));
   };
 
-  // Reseta o cargo se mudar o nível (ex: Técnico -> Superior)
   const handleRoleTypeChange = (e) => {
     const newType = e.target.value;
     setFormData(f => {
@@ -212,10 +212,20 @@ export default function Login() {
       label: typeof d === 'string' ? d : (d?.name || "Desconhecido") 
     }));
 
-  const searchSelectClasses = "w-full bg-slate-950/50 border border-slate-800 rounded-lg pl-4 pr-10 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 transition-all placeholder:text-slate-600";
+  // Classes atualizadas baseadas na nova UI
+  const inputBaseClasses = "w-full bg-[#0B1437] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-[#111C44] transition-all placeholder:text-[#A3AED0]/50 disabled:opacity-50 disabled:cursor-not-allowed";
+  
+  // Estilo inline para selects nativos terem a setinha correta
+  const nativeSelectStyle = {
+    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23A3AED0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+    backgroundPosition: 'right 1rem center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '1.2em 1.2em',
+    paddingRight: '2.5rem',
+    appearance: 'none'
+  };
 
   const stateOpts  = Object.entries(states || {});
-  const deptOpts   = Object.entries(departments || {});
   const regimeOpts = Object.entries(workRegimes || {});
   const rtOpts     = Object.entries(roleTypes || {});
 
@@ -276,7 +286,6 @@ export default function Login() {
         }, 0);
       }
     } catch (err) {
-      // TRATAMENTO DE ERRO ROBUSTO (Evita crash de Array do FastAPI 422)
       const detail = err?.data?.detail;
       let errorMessage = 'Erro ao processar solicitação. Tente novamente.';
 
@@ -285,7 +294,6 @@ export default function Login() {
         else if (detail === 'Username já cadastrado') errorMessage = 'Este nome de usuário já está em uso.';
         else errorMessage = detail;
       } else if (Array.isArray(detail)) {
-        // Trata erro de validação (FastAPI 422 Pydantic)
         console.error("Erro de validação do Pydantic:", detail);
         errorMessage = 'Verifique os campos preenchidos. Alguns dados estão inválidos ou faltando.';
       } else if (mode === 'reset' && !detail) {
@@ -304,49 +312,51 @@ export default function Login() {
 
   if (sessionLoading || initLoading) {
     return (
-      <div className="h-screen w-full bg-slate-950 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
-          <div className="text-slate-400 text-sm font-medium tracking-wide animate-pulse">Iniciando Triangula...</div>
-        </div>
-      </div>
+       <div className="h-screen w-full bg-[#0B1437] flex items-center justify-center">
+              <div className="flex flex-col items-center gap-5">
+                {/* Usando o LoadingTriangle grande para a tela inicial */}
+                <LoadingTriangle size={48} />
+                <div className="text-[#A3AED0] text-sm font-bold uppercase tracking-widest animate-pulse mt-2">
+                  Iniciando Triangula...
+                </div>
+              </div>
+            </div>
     )
   }
 
-  const inputBaseClasses = "w-full bg-slate-950/50 border border-slate-800 rounded-lg px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 transition-all placeholder:text-slate-600";
-
   return (
-    <div className="min-h-screen w-full bg-slate-950 flex flex-col items-center justify-center p-4 py-8 md:py-12 font-sans selection:bg-blue-500/30 overflow-x-hidden overflow-y-auto relative z-0">
+    <div className="min-h-screen w-full bg-[#0B1437] flex flex-col items-center justify-center p-4 py-8 md:py-12 font-sans selection:bg-blue-500/30 overflow-x-hidden overflow-y-auto relative z-0">
       
-      {/* Estilos para customizar PhoneInput e SearchableSelect no escuro */}
+      {/* Estilos para customizar PhoneInput no escuro */}
       <style>{`
-        .PhoneInput { display: flex; align-items: center; gap: 0.1rem; }
-        .PhoneInputCountry { display: flex; align-items: center; gap: 0.5rem; background-color: rgba(2, 6, 23, 0.5); border: 1px solid #1e293b; border-radius: 0.5rem; padding: 0 0.75rem; height: 42px; }
-        .PhoneInputCountrySelectArrow { color: white; border-right-color: white; border-bottom-color: white; opacity: 0.7; }
-        .PhoneInputInput { flex: 1; background-color: rgba(2, 6, 23, 0.5); border: 1px solid #1e293b; border-radius: 0.5rem; padding: 0.5rem 1rem; color: #e2e8f0; font-size: 0.875rem; height: 42px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-        .PhoneInputInput:focus { border-color: #3b82f6; box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.5); }
-        .PhoneInputInput::placeholder { color: #475569; }
-        .PhoneInputCountrySelect option { background-color: #0f172a; color: #e2e8f0; }
+        .PhoneInput { display: flex; align-items: center; gap: 0.2rem; }
+        .PhoneInputCountry { display: flex; align-items: center; gap: 0.5rem; background-color: #0B1437; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; padding: 0 0.75rem; height: 46px; transition: background-color 0.2s; }
+        .PhoneInputCountry:hover { background-color: #111C44; }
+        .PhoneInputCountrySelectArrow { color: #A3AED0; border-right-color: #A3AED0; border-bottom-color: #A3AED0; opacity: 0.8; }
+        .PhoneInputInput { flex: 1; background-color: #0B1437; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; padding: 0.5rem 1rem; color: white; font-size: 0.875rem; height: 46px; outline: none; transition: all 0.2s; }
+        .PhoneInputInput:focus { border-color: #3b82f6; background-color: #111C44; }
+        .PhoneInputInput::placeholder { color: rgba(163, 174, 208, 0.5); }
+        .PhoneInputCountrySelect option { background-color: #1B254B; color: white; }
       `}</style>
 
       {/* Background Orbs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-600/10 rounded-full blur-[100px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[30rem] h-[30rem] bg-blue-600/10 rounded-full blur-[120px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[30rem] h-[30rem] bg-indigo-600/10 rounded-full blur-[120px]" />
       </div>
 
       {/* Header / Logo */}
       <div className="mb-8 flex flex-col items-center shrink-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center shadow-lg mb-5 border border-blue-400/20">
-          <Triangle className="text-white fill-white/20" size={28} />
+        <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)] mb-6">
+          <Triangle className="text-white fill-white/20" size={32} />
         </div>
-        <h1 className="text-2xl md:text-3xl font-bold text-white tracking-tight text-center">
+        <h1 className="text-2xl md:text-3xl font-bold text-white tracking-wide text-center">
           {mode === 'login' && 'Acesse o Triangula'}
           {mode === 'register' && 'Crie sua conta'}
           {mode === 'forgot' && 'Recuperar Senha'}
           {mode === 'reset' && 'Criar Nova Senha'}
         </h1>
-        <p className="text-slate-400 text-sm mt-2 text-center max-w-xs">
+        <p className="text-[#A3AED0] text-sm mt-2.5 text-center max-w-sm leading-relaxed">
           {mode === 'login' && 'Gerencie seus interesses de permuta com facilidade.'}
           {mode === 'register' && 'Conecte-se às melhores oportunidades de movimentação.'}
           {mode === 'forgot' && 'Vamos te ajudar a recuperar o acesso à sua conta.'}
@@ -355,21 +365,21 @@ export default function Login() {
       </div>
 
       {/* Main Card */}
-      <div className={`w-full transition-all duration-500 ${mode === 'register' && registerStep === 2 ? 'max-w-4xl' : 'max-w-sm'}`}>
-        <div className={`bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-2xl shadow-xl animate-in zoom-in-95 duration-300 ${mode === 'register' && registerStep === 2 ? 'p-4 sm:p-6' : 'p-5 sm:p-8'}`}>
+      <div className={`w-full transition-all duration-500 ${mode === 'register' && registerStep === 2 ? 'max-w-4xl' : 'max-w-[420px]'}`}>
+        <div className={`bg-[#111C44] border border-white/5 rounded-3xl shadow-2xl animate-in zoom-in-95 duration-300 ${mode === 'register' && registerStep === 2 ? 'p-6 sm:p-8' : 'p-6 sm:p-10'}`}>
           
           {mode === 'register' && (
-            <div className="flex items-center gap-2 mb-6">
-              <div className={`h-1.5 flex-1 rounded-full transition-colors ${registerStep >= 1 ? 'bg-blue-500' : 'bg-slate-800'}`} />
-              <div className={`h-1.5 flex-1 rounded-full transition-colors ${registerStep >= 2 ? 'bg-blue-500' : 'bg-slate-800'}`} />
+            <div className="flex items-center gap-2.5 mb-8">
+              <div className={`h-1.5 flex-1 rounded-full transition-colors ${registerStep >= 1 ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]' : 'bg-white/10'}`} />
+              <div className={`h-1.5 flex-1 rounded-full transition-colors ${registerStep >= 2 ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]' : 'bg-white/10'}`} />
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
 
             {mode === 'forgot' && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
-                <p className="text-sm text-slate-300 mb-2 leading-relaxed">
+              <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
+                <p className="text-sm text-[#A3AED0] mb-2 leading-relaxed">
                   Digite seu nome de usuário abaixo. Enviaremos um link de recuperação para o seu e-mail cadastrado.
                 </p>
                 <div className="space-y-1.5">
@@ -388,7 +398,7 @@ export default function Login() {
             )}
 
             {mode === 'reset' && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+              <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="space-y-1.5">
                   <Label>Nova Senha</Label>
                   <div className="relative">
@@ -399,12 +409,12 @@ export default function Login() {
                       placeholder="••••••••"
                       value={formData.password}
                       onChange={handleChange}
-                      className={`${inputBaseClasses} pr-10 tracking-widest placeholder:tracking-normal`}
+                      className={`${inputBaseClasses} pr-12 tracking-widest placeholder:tracking-normal`}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors p-1"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A3AED0] hover:text-white transition-colors p-1"
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
@@ -414,7 +424,7 @@ export default function Login() {
             )}
 
             {(mode === 'login' || (mode === 'register' && registerStep === 1)) && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
+              <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div className="space-y-1.5">
                   <Label>Nome de usuário</Label>
                   <input
@@ -451,9 +461,9 @@ export default function Login() {
                         defaultCountry="BR"
                         value={formData.phone}
                         onChange={(value) => setFormData({ ...formData, phone: value || '' })}
-                        placeholder="(13) 99999-9999"
+                        placeholder="(22) 99999-9999"
                         numberInputProps={{
-                          className: "bg-transparent text-sm text-slate-200 focus:outline-none placeholder:text-slate-600 w-full",
+                          className: "bg-transparent text-sm text-white focus:outline-none placeholder:text-[#A3AED0]/50 w-full",
                           required: true
                         }}
                       />
@@ -462,8 +472,8 @@ export default function Login() {
                 )}
 
                 <div className="space-y-1.5">
-                  <div className="flex justify-between items-center">
-                    <Label>Senha</Label>
+                  <div className="flex justify-between items-center mb-1">
+                    <Label className="mb-0">Senha</Label>
                     {mode === 'login' && (
                       <button 
                         type="button"
@@ -471,7 +481,7 @@ export default function Login() {
                           setMode('forgot');
                           setStatus({ type: null, message: '' });
                         }}
-                        className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                        className="text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors"
                       >
                         Esqueceu a senha?
                       </button>
@@ -486,12 +496,12 @@ export default function Login() {
                       value={formData.password}
                       onChange={handleChange}
                       autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
-                      className={`${inputBaseClasses} pr-10 tracking-widest placeholder:tracking-normal`}
+                      className={`${inputBaseClasses} pr-12 tracking-widest placeholder:tracking-normal`}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors p-1"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A3AED0] hover:text-white transition-colors p-1"
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
@@ -501,12 +511,12 @@ export default function Login() {
             )}
 
             {mode === 'register' && registerStep === 2 && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-right-4 duration-300">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                   {/* Bloco 1: Dados Pessoais */}
-                  <div className="bg-slate-950/40 border border-slate-800/60 rounded-xl p-3 sm:p-4 space-y-3">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Identificação</h3>
-                    <div className="space-y-3">
+                  <div className="bg-[#0B1437] border border-white/5 rounded-2xl p-4 sm:p-6 space-y-4">
+                    <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#A3AED0] mb-2">Identificação</h3>
+                    <div className="space-y-4">
                         <div className="space-y-1.5">
                             <Label>Nome Completo</Label>
                             <input 
@@ -518,7 +528,7 @@ export default function Login() {
                                 className={inputBaseClasses}
                             />
                         </div>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1.5">
                                 <Label>Chave</Label>
                                 <input 
@@ -533,9 +543,9 @@ export default function Login() {
                             </div>
                             <div className="space-y-1.5">
                                 <Label>Status</Label>
-                                <select name="state" value={formData.state} onChange={handleChange} className={inputBaseClasses}>
-                                    <option className="bg-slate-900 text-slate-200" value="permuta">Permuta</option>
-                                    <option className="bg-slate-900 text-slate-200" value="liberado">Liberado</option>
+                                <select style={nativeSelectStyle} name="state" value={formData.state} onChange={handleChange} className={inputBaseClasses}>
+                                    <option className="bg-[#1B254B] text-white" value="permuta">Permuta</option>
+                                    <option className="bg-[#1B254B] text-white" value="liberado">Liberado</option>
                                 </select>
                             </div>
                         </div>
@@ -543,17 +553,17 @@ export default function Login() {
                   </div>
 
                   {/* Bloco 2: Lotação */}
-                  <div className="bg-slate-950/40 border border-slate-800/60 rounded-xl p-3 sm:p-4 space-y-3">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Sua Lotação Atual</h3>
-                    <div className="space-y-3">
+                  <div className="bg-[#0B1437] border border-white/5 rounded-2xl p-4 sm:p-6 space-y-4">
+                    <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#A3AED0] mb-2">Sua Lotação Atual</h3>
+                    <div className="space-y-4">
                         <div className="space-y-1.5 relative z-50">
                             <Label>Estado</Label>
-                            <select name="state_id" value={formData.state_id} onChange={handleProfileState} disabled={formData.base_id !== ANY || formData.region_id !== ANY} className={inputBaseClasses}>
-                                <option className="bg-slate-900 text-slate-200" value={ANY}>- Selecione -</option>
-                                {stateOpts.sort((a, b) => a[1].name.localeCompare(b[1].name)).map(([id, s]) => <option className="bg-slate-900 text-slate-200" key={id} value={id}>{s.name}</option>)}
+                            <select style={nativeSelectStyle} name="state_id" value={formData.state_id} onChange={handleProfileState} disabled={formData.base_id !== ANY || formData.region_id !== ANY} className={inputBaseClasses}>
+                                <option className="bg-[#1B254B] text-white" value={ANY}>- Selecione -</option>
+                                {stateOpts.sort((a, b) => a[1].name.localeCompare(b[1].name)).map(([id, s]) => <option className="bg-[#1B254B] text-white" key={id} value={id}>{s.name}</option>)}
                             </select>
                         </div>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1.5 relative z-40">
                                 <Label>Região</Label>
                                 <SearchableSelect 
@@ -561,7 +571,7 @@ export default function Login() {
                                   value={formData.region_id}
                                   onChange={handleProfileRegion}
                                   disabled={formData.base_id !== ANY}
-                                  inputClassName={searchSelectClasses}
+                                  inputClassName={inputBaseClasses}
                                   placeholder="- Selecione -"
                                 />
                             </div>
@@ -571,7 +581,7 @@ export default function Login() {
                                   options={filteredBasesOpts}
                                   value={formData.base_id}
                                   onChange={handleProfileBase}
-                                  inputClassName={searchSelectClasses}
+                                  inputClassName={inputBaseClasses}
                                   placeholder="- Selecione -"
                                 />
                             </div>
@@ -581,14 +591,14 @@ export default function Login() {
                 </div>
 
                 {/* Bloco 3: Perfil */}
-                <div className="bg-slate-950/40 border border-slate-800/60 rounded-xl p-3 sm:p-4 space-y-3 relative z-20">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">Perfil Profissional</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <div className="bg-[#0B1437] border border-white/5 rounded-2xl p-4 sm:p-6 space-y-4 relative z-20">
+                  <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#A3AED0] mb-2">Perfil Profissional</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                       <div className="space-y-1.5 relative z-[60]">
                           <Label>Nível</Label>
-                          <select name="role_type_id" value={formData.role_type_id} onChange={handleRoleTypeChange} className={inputBaseClasses}>
-                              <option className="bg-slate-900 text-slate-200" value={ANY}>- Selecione -</option>
-                              {rtOpts.map(([id, n]) => <option className="bg-slate-900 text-slate-200" key={id} value={id}>{typeof n === 'string' ? n : n?.name}</option>)}
+                          <select style={nativeSelectStyle} name="role_type_id" value={formData.role_type_id} onChange={handleRoleTypeChange} className={inputBaseClasses}>
+                              <option className="bg-[#1B254B] text-white" value={ANY}>- Selecione -</option>
+                              {rtOpts.map(([id, n]) => <option className="bg-[#1B254B] text-white" key={id} value={id}>{typeof n === 'string' ? n : n?.name}</option>)}
                           </select>
                       </div>
                       <div className="space-y-1.5 relative z-[50]">
@@ -598,7 +608,7 @@ export default function Login() {
                             onChange={(val) => setFormData(f => ({ ...f, role_id: val }))}
                             options={filteredRoles}
                             placeholder={formData.role_type_id === ANY ? "Selecione o nível..." : "Buscar cargo..."}
-                            inputClassName={searchSelectClasses}
+                            inputClassName={inputBaseClasses}
                           />
                       </div>
                       <div className="space-y-1.5 relative z-[40]">
@@ -608,19 +618,19 @@ export default function Login() {
                             onChange={(val) => setFormData(f => ({ ...f, department_id: val }))}
                             options={filteredDeptsOpts}
                             placeholder="- Selecione -"
-                            inputClassName={searchSelectClasses}
+                            inputClassName={inputBaseClasses}
                           />
                       </div>
                       <div className="space-y-1.5 relative z-[30]">
                           <Label>Regime</Label>
-                          <select name="regime_id" value={formData.regime_id} onChange={handleChange} className={inputBaseClasses}>
-                              <option className="bg-slate-900 text-slate-200" value={ANY}>- Selecione -</option>
-                              {regimeOpts.map(([id, n]) => <option className="bg-slate-900 text-slate-200" key={id} value={id}>{typeof n === 'string' ? n : n?.name}</option>)}
+                          <select style={nativeSelectStyle} name="regime_id" value={formData.regime_id} onChange={handleChange} className={inputBaseClasses}>
+                              <option className="bg-[#1B254B] text-white" value={ANY}>- Selecione -</option>
+                              {regimeOpts.map(([id, n]) => <option className="bg-[#1B254B] text-white" key={id} value={id}>{typeof n === 'string' ? n : n?.name}</option>)}
                           </select>
                       </div>
                   </div>
                   
-                  <div className="space-y-1.5 pt-1">
+                  <div className="space-y-1.5 pt-2">
                       <Label>Observações Adicionais (Opcional)</Label>
                       <textarea
                           name="observations"
@@ -638,13 +648,13 @@ export default function Login() {
             {/* AÇÕES (Botões) */}
             <div className="pt-2 relative z-0">
                 {mode === 'forgot' ? (
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-4">
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2"
+                            className="w-full bg-blue-500 hover:bg-blue-400 disabled:bg-white/5 disabled:text-[#A3AED0]/50 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(59,130,246,0.25)] disabled:shadow-none"
                         >
-                            {isLoading ? <Loader2 size={20} className="animate-spin" /> : 'Enviar link de recuperação'}
+                            {isLoading ? <LoadingTriangle size={20} /> : 'Enviar link de recuperação'}
                         </button>
                         <button
                             type="button"
@@ -652,7 +662,7 @@ export default function Login() {
                               setMode('login');
                               setStatus({ type: null, message: '' });
                             }}
-                            className="w-full bg-transparent hover:bg-slate-800/50 text-slate-300 font-semibold h-10 rounded-xl text-sm transition-all"
+                            className="w-full bg-transparent hover:bg-white/5 text-[#A3AED0] hover:text-white font-semibold h-12 rounded-xl text-sm transition-all"
                         >
                             Voltar para o login
                         </button>
@@ -661,41 +671,41 @@ export default function Login() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2"
+                        className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-white/5 disabled:text-[#A3AED0]/50 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(16,185,129,0.25)] disabled:shadow-none"
                     >
-                        {isLoading ? <Loader2 size={20} className="animate-spin" /> : 'Salvar Nova Senha'}
+                        {isLoading ? <LoadingTriangle size={20} /> : 'Salvar Nova Senha'}
                     </button>
                 ) : mode === 'register' && registerStep === 1 ? (
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2"
+                        className="w-full bg-blue-500 hover:bg-blue-400 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(59,130,246,0.25)]"
                     >
                         Continuar <ArrowRight size={18} />
                     </button>
                 ) : mode === 'register' && registerStep === 2 ? (
-                    <div className="flex flex-col-reverse sm:flex-row gap-3">
+                    <div className="flex flex-col-reverse sm:flex-row gap-4 mt-2">
                         <button
                             type="button"
                             onClick={() => setRegisterStep(1)}
-                            className="w-full sm:w-1/3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2"
+                            className="w-full sm:w-1/3 bg-white/5 hover:bg-white/10 text-[#A3AED0] hover:text-white font-semibold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2"
                         >
                             <ArrowLeft size={18} /> Voltar
                         </button>
                         <button
                             type="submit"
                             disabled={isLoading || !isStep2Valid}
-                            className="w-full sm:flex-1 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2"
+                            className="w-full sm:flex-1 bg-emerald-500 hover:bg-emerald-400 disabled:bg-white/5 disabled:text-[#A3AED0]/50 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(16,185,129,0.25)] disabled:shadow-none"
                         >
-                            {isLoading ? <Loader2 size={20} className="animate-spin" /> : 'Finalizar Cadastro'}
+                            {isLoading ? <LoadingTriangle size={20} /> : 'Finalizar Cadastro'}
                         </button>
                     </div>
                 ) : (
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-500 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2"
+                        className="w-full bg-blue-500 hover:bg-blue-400 disabled:bg-white/5 disabled:text-[#A3AED0]/50 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(59,130,246,0.25)] disabled:shadow-none"
                     >
-                        {isLoading ? <Loader2 size={20} className="animate-spin" /> : 'Entrar na plataforma'}
+                        {isLoading ? <LoadingTriangle size={20} /> : 'Entrar na plataforma'}
                     </button>
                 )}
             </div>
@@ -704,12 +714,12 @@ export default function Login() {
 
         {/* FOOTER */}
         {!(mode === 'register' && registerStep === 2) && mode !== 'forgot' && mode !== 'reset' && (
-          <div className="mt-6 text-center animate-in fade-in duration-500 delay-150">
-            <p className="text-sm text-slate-400">
+          <div className="mt-8 text-center animate-in fade-in duration-500 delay-150">
+            <p className="text-sm text-[#A3AED0] font-medium">
               {mode === 'login' ? 'Ainda não tem acesso?' : 'Já possui uma conta?'}
               <button
                 onClick={switchMode}
-                className="ml-1.5 text-blue-400 hover:text-blue-300 hover:underline font-semibold transition-colors"
+                className="ml-1.5 text-white hover:text-blue-400 font-bold transition-colors"
               >
                 {mode === 'login' ? 'Crie sua conta' : 'Faça login'}
               </button>
@@ -720,13 +730,13 @@ export default function Login() {
 
       {/* TOAST NOTIFICATION */}
       {status.message && (
-        <div className={`fixed bottom-6 md:bottom-auto md:top-6 left-1/2 -translate-x-1/2 w-[90%] sm:w-auto min-w-[300px] px-5 py-4 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 md:slide-in-from-top-4 duration-300 border z-50 backdrop-blur-md ${
+        <div className={`fixed bottom-6 md:bottom-auto md:top-8 left-1/2 -translate-x-1/2 w-[90%] sm:w-auto min-w-[320px] px-5 py-4 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-4 md:slide-in-from-top-4 duration-300 border z-50 bg-[#111C44] ${
           status.type === 'success'
-            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-            : 'bg-red-500/10 border-red-500/30 text-red-400'
+            ? 'border-emerald-500/30 text-emerald-400'
+            : 'border-red-500/30 text-red-400'
         }`}>
           {status.type === 'success' ? <CheckCircle2 size={20} className="shrink-0" /> : <AlertCircle size={20} className="shrink-0" />}
-          <span className="text-sm font-semibold">{status.message}</span>
+          <span className="text-sm font-semibold text-white tracking-wide">{status.message}</span>
         </div>
       )}
     </div>

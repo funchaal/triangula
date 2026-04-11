@@ -4,13 +4,13 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import MapaGlobal from './views/MapaGlobal/index.jsx'
-import MeusInteresses from './views/MeusInteresses.jsx'
-import MeusMatches from './views/MeusMatches.jsx'
-import Login from './views/Login.jsx'
+import MeusInteresses from './views/MeusInteresses/index.jsx'
+import MeusMatches from './views/MeusMatches/index.jsx'
+import MeusDados from './views/MeusDados/index.jsx'
+import Login from './views/Login/index.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import { Provider } from 'react-redux'
 import { store } from './store/store.js'
-import MeusDados from './views/MeusDados.jsx'
 
 
 const router = createBrowserRouter([

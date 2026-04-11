@@ -43,12 +43,11 @@ const Sidebar = () => {
     : '?';
 
   const NavLinks = () => (
-    <nav className="flex-1 px-3 py-4 space-y-1">
+    <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
       {NAV_ITEMS.map(item => {
         const IconComponent = item.icon;
         const isActive = location.pathname === item.to;
         
-        // Define o valor do badge: se for a rota de matches, usa o length do array do Redux
         const isMatchesItem = item.label === 'Meus Matches';
         const badgeValue = isMatchesItem ? matches.length : item.badge;
 
@@ -56,18 +55,21 @@ const Sidebar = () => {
           <a
             key={item.id}
             href={item.to}
-            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+            className={`group w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
               isActive
-                ? 'bg-blue-500/10 text-blue-400'
-                : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+                ? 'bg-blue-500/20 text-white'
+                : 'text-[#A3AED0] hover:bg-white/5 hover:text-white'
             }`}
             onClick={(e) => handleNavClick(e, item.to, item.requiresAuth)}
           >
-            <IconComponent size={18} className={isActive ? 'text-blue-500' : 'text-slate-500'} />
+            <IconComponent 
+              size={20} 
+              className={`transition-colors ${isActive ? 'text-blue-400' : 'text-[#A3AED0] group-hover:text-white'}`} 
+            />
             <span className="truncate">{item.label}</span>
             
             {badgeValue > 0 && (
-              <span className="ml-auto bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-mono shrink-0">
+              <span className="ml-auto bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-mono shrink-0 shadow-sm">
                 {badgeValue}
               </span>
             )}
@@ -78,26 +80,26 @@ const Sidebar = () => {
   );
 
   const UserProfile = () => (
-    <div className="p-4 border-t border-slate-800">
+    <div className="p-4 border-t border-white/10">
       {isLoggedIn && user ? (
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center text-xs font-bold text-white shrink-0">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-lg shadow-blue-500/20">
             {initials}
           </div>
           <div className="flex-1 overflow-hidden min-w-0">
-            <div className="text-sm font-semibold text-slate-200 truncate">
+            <div className="text-sm font-semibold text-white truncate">
               {user.username}
             </div>
-            <div className="text-[11px] text-slate-500 font-mono truncate">
+            <div className="text-[12px] text-[#A3AED0] truncate">
               {user.email ?? ''}
             </div>
           </div>
           <div className="relative shrink-0">
             <button
               onClick={() => setMenuOpen(v => !v)}
-              className="text-slate-500 hover:text-slate-200 transition-colors p-1 rounded-md hover:bg-slate-800"
+              className="text-[#A3AED0] hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/10"
             >
-              <MoreHorizontal size={18} />
+              <MoreHorizontal size={20} />
             </button>
             {menuOpen && (
               <>
@@ -105,12 +107,12 @@ const Sidebar = () => {
                   className="fixed inset-0 z-10"
                   onClick={() => setMenuOpen(false)}
                 />
-                <div className="absolute bottom-10 right-0 z-20 w-40 bg-slate-800 border border-slate-700 rounded-lg shadow-xl overflow-hidden">
+                <div className="absolute bottom-12 right-0 z-20 w-44 bg-[#1B254B] border border-white/10 rounded-xl shadow-2xl overflow-hidden">
                   <button
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
                   >
-                    <LogOut size={15} />
+                    <LogOut size={16} />
                     Sair da conta
                   </button>
                 </div>
@@ -121,9 +123,9 @@ const Sidebar = () => {
       ) : (
         <button
           onClick={() => navigate('/login')}
-          className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800/50 hover:text-slate-200 transition-all border border-slate-800"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-medium text-[#A3AED0] hover:bg-white/5 hover:text-white transition-all border border-white/10"
         >
-          <LogIn size={16} className="text-slate-500" />
+          <LogIn size={18} />
           Entrar na sua conta
         </button>
       )}
@@ -131,19 +133,19 @@ const Sidebar = () => {
   );
 
   const SidebarHeader = () => (
-    <div className="h-16 px-4 border-slate-800 flex justify-between items-center">
+    <div className="h-20 px-6 border-b border-white/10 flex justify-between items-center">
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center shadow-[0_0_10px_rgba(59,130,246,0.2)]">
-          <Triangle className="text-white fill-white/20" size={16} />
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+          <Triangle className="text-white fill-white/20" size={18} />
         </div>
         <div>
-          <div className="text-xs font-bold tracking-widest uppercase text-blue-500">Triangula</div>
-          <div className="text-[10px] text-slate-500 tracking-widest uppercase">Sistema de Permuta</div>
+          <div className="text-sm font-bold tracking-widest uppercase text-white">Triangula</div>
+          <div className="text-[10px] text-[#A3AED0] tracking-widest uppercase mt-0.5">Sistema de Permuta</div>
         </div>
       </div>
       <button
         onClick={() => setSidebarOpen(false)}
-        className="md:hidden p-2 rounded-md text-slate-500 hover:bg-slate-800 hover:text-slate-200 transition-colors"
+        className="md:hidden p-2 rounded-lg text-[#A3AED0] hover:bg-white/10 hover:text-white transition-colors"
         title="Fechar menu"
       >
         <X size={20} />
@@ -153,16 +155,17 @@ const Sidebar = () => {
 
   return (
     <>
+      {/* Botão de abrir menu ajustado: sem fundo, posicionado mais para baixo */}
       <button
         onClick={() => setSidebarOpen(!isSidebarOpen)}
-        className="fixed top-4 left-4 z-20 md:hidden p-2 rounded-md bg-slate-800/50 text-white hover:bg-slate-700/50 transition-all"
+        className="fixed top-7 left-3 z-20 md:hidden p-2 text-[#A3AED0]"
         title={isSidebarOpen ? "Fechar menu" : "Abrir menu"}
       >
-        <Menu size={20} />
+        <Menu size={26} />
       </button>
 
       <div
-        className={`fixed inset-y-0 left-0 z-30 w-64 bg-slate-900 border-r border-slate-800 flex flex-col transition-transform duration-300 ease-in-out md:relative md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-30 w-72 bg-[#111C44] flex flex-col transition-transform duration-300 ease-in-out md:relative md:translate-x-0 shadow-2xl md:shadow-none ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -173,7 +176,7 @@ const Sidebar = () => {
 
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-20 md:hidden"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-20 md:hidden transition-opacity"
           onClick={() => setSidebarOpen(false)}
         />
       )}
