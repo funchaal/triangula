@@ -61,43 +61,52 @@ function MapSidebar({ selection, mapData, locations, regions, states, roles, wor
   }`;
 
   return (
-    <div className={sidebarClasses}>
-      {currentSelection && (
-        <>
-          <SidebarHeader
-            selection={currentSelection}
-            locations={locations}
-            regions={regions}
-            states={states}
-            onClose={onClose}
-          />
+    <>
+      {/* Fundo escuro com transição de opacidade (apenas mobile, mais transparente) */}
+      <div
+        className={`fixed inset-0 bg-black/0 backdrop-blur-sm z-40 md:hidden transition-all duration-300 ${
+          selection ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+        onClick={onClose}
+      />
 
-          {/* Área de conteúdo com scroll */}
-          <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
-
-            {isArc && <SidebarArcStats arcInfo={arcInfo} />}
-
-            {isBase && (
-              <SidebarBaseStats
-                baseArcsOut={baseArcsOut}
-                baseArcsIn={baseArcsIn}
-                locations={locations}
-                regions={regions}
-                states={states}
-              />
-            )}
-
-            <SidebarUserList
-              isFetching={isFetching}
-              isBase={isBase}
-              users={users}
-              roles={roles}
-              workRegimes={workRegimes}
+      <div className={sidebarClasses}>
+        {currentSelection && (
+          <>
+            <SidebarHeader
+              selection={currentSelection}
+              locations={locations}
+              regions={regions}
+              states={states}
+              onClose={onClose}
             />
-          </div>
-        </>
-      )}
-    </div>
+
+            {/* Área de conteúdo com scroll */}
+            <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
+              {isArc && <SidebarArcStats arcInfo={arcInfo} />}
+
+              {isBase && (
+                <SidebarBaseStats
+                  baseArcsOut={baseArcsOut}
+                  baseArcsIn={baseArcsIn}
+                  locations={locations}
+                  regions={regions}
+                  states={states}
+                />
+              )}
+
+              <SidebarUserList
+                isFetching={isFetching}
+                isBase={isBase}
+                users={users}
+                roles={roles}
+                workRegimes={workRegimes}
+              />
+            </div>
+          </>
+        )}
+      </div>
+    </>
   );
 }
 

@@ -30,7 +30,7 @@ function PerfilSelects({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-      <div className="relative z-[60]">
+      <div className="relative">
         <Label>Nível</Label>
         {isEditing ? (
           <div className="mt-1.5">
@@ -46,7 +46,7 @@ function PerfilSelects({
         )}
       </div>
 
-      <div className="relative z-[50]">
+      <div className="relative">
         <Label>Cargo / Ênfase</Label>
         {isEditing ? (
           <div className="mt-1.5">
@@ -62,7 +62,7 @@ function PerfilSelects({
         )}
       </div>
 
-      <div className="relative z-[40]">
+      <div className="relative">
         <Label>Gerência / Depto.</Label>
         {isEditing ? (
           <div className="mt-1.5">
@@ -78,7 +78,7 @@ function PerfilSelects({
         )}
       </div>
 
-      <div className="relative z-[30]">
+      <div className="relative">
         <Label>Regime</Label>
         {isEditing ? (
           <div className="mt-1.5">

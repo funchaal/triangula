@@ -360,8 +360,8 @@ function MeusDados() {
 
       {/* ── Botões mobile ────────────── */}
       {isEditing && (
-        <div className="fixed bottom-0 left-0 w-full p-4 bg-[#111C44]/90 backdrop-blur-md border-t border-white/10 z-50 flex gap-3 sm:hidden shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
-          <ButtonGhost onClick={handleCancelar} className="flex-1 justify-center bg-[#0B1437]">
+        <div className="fixed bottom-0 left-0 w-full p-4 bg-[#111C44] backdrop-blur-md border-t border-white/10 z-10 flex gap-3 sm:hidden">
+          <ButtonGhost onClick={handleCancelar} className="flex-1 justify-center">
             Cancelar
           </ButtonGhost>
           <ButtonPrimary

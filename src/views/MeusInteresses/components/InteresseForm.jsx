@@ -185,7 +185,7 @@ function InteresseForm({
         {acoes}
       </div>
 
-      <div className="fixed bottom-0 left-0 w-full p-4 bg-[#111C44] border-t border-white/10 flex gap-3 sm:hidden">
+      <div className="fixed bottom-0 left-0 w-full p-4 bg-[#111C44] border-t border-white/10 flex gap-3 sm:hidden z-10">
         {acoes}
       </div>
     </div>

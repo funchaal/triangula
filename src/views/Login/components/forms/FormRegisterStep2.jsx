@@ -106,7 +106,7 @@ function FormRegisterStep2({
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#A3AED0] mb-2">Sua Lotação Atual</h3>
 
           {/* Estado */}
-          <div className="space-y-1.5 relative z-50">
+          <div className="space-y-1.5 relative">
             <Label>Estado</Label>
             <select style={SELECT_ARROW_STYLE} name="state_id" value={formData.state_id}
               onChange={handleProfileState}
@@ -121,7 +121,7 @@ function FormRegisterStep2({
 
           <div className="grid grid-cols-2 gap-4">
             {/* Região */}
-            <div className="space-y-1.5 relative z-40">
+            <div className="space-y-1.5 relative">
               <Label>Região</Label>
               <SearchableSelect
                 options={filteredRegionsOpts}
@@ -133,7 +133,7 @@ function FormRegisterStep2({
               />
             </div>
             {/* Base */}
-            <div className="space-y-1.5 relative z-30">
+            <div className="space-y-1.5 relative">
               <Label>Base</Label>
               <SearchableSelect
                 options={filteredBasesOpts}
@@ -148,12 +148,12 @@ function FormRegisterStep2({
       </div>
 
       {/* ── Bloco 3: Perfil Profissional ─────────────────────────────── */}
-      <div className="sm:bg-[#0B1437] border-t border-t-1 border-t-white/15 sm:border sm:border-white/5 sm:rounded-2xl p-0 sm:p-6 space-y-4 pt-5 relative z-20">
+      <div className="sm:bg-[#0B1437] border-t border-t-1 border-t-white/15 sm:border sm:border-white/5 sm:rounded-2xl p-0 sm:p-6 space-y-4 pt-5 relative">
         <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#A3AED0] mb-2">Perfil Profissional</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {/* Nível */}
-          <div className="space-y-1.5 relative z-[60]">
+          <div className="space-y-1.5 relative flex flex-col justify-end h-full">
             <Label>Nível</Label>
             <select style={SELECT_ARROW_STYLE} name="role_type_id" value={formData.role_type_id}
               onChange={handleRoleTypeChange} className={INPUT_CLASSES}>
@@ -167,7 +167,7 @@ function FormRegisterStep2({
           </div>
 
           {/* Cargo */}
-          <div className="space-y-1.5 relative z-[50]">
+          <div className="space-y-1.5 relative flex flex-col justify-end h-full">
             <Label>Cargo / Ênfase</Label>
             <SearchableSelect
               value={formData.role_id}
@@ -179,7 +179,7 @@ function FormRegisterStep2({
           </div>
 
           {/* Departamento */}
-          <div className="space-y-1.5 relative z-[40]">
+          <div className="space-y-1.5 relative flex flex-col justify-end h-full">
             <Label>Gerência / Depto.</Label>
             <SearchableSelect
               value={formData.department_id}
@@ -191,7 +191,7 @@ function FormRegisterStep2({
           </div>
 
           {/* Regime */}
-          <div className="space-y-1.5 relative z-[30]">
+          <div className="space-y-1.5 relative flex flex-col justify-end h-full">
             <Label>Regime</Label>
             <select style={SELECT_ARROW_STYLE} name="regime_id" value={formData.regime_id}
               onChange={handleChange} className={INPUT_CLASSES}>

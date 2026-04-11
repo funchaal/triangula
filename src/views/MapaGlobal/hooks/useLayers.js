@@ -49,7 +49,7 @@ export function useLayers({
       const i0 = Math.max(0, Math.floor(tTail  * n));
       const i1 = Math.min(n, Math.ceil (tFront * n));
 
-      const isHov   = hoveredArc?.from === arc.from && hoveredArc?.to === arc.to;
+      const isHov   = !IS_TOUCH && hoveredArc?.from === arc.from && hoveredArc?.to === arc.to;
       const isSel   = selection?.type === 'arc' && selection.from === arc.from && selection.to === arc.to;
       const nodeHit = hoveredNodeKey === arc.from || hoveredNodeKey === arc.to ||
                       (selection?.type === 'base' && (selection.key === arc.from || selection.key === arc.to));
@@ -104,8 +104,8 @@ export function useLayers({
       widthUnits: "pixels",
       pickable:   true,
       parameters: { depthTest: false },
-      onHover: ({ object }) =>
-        dispatch(setHoveredArc(object ? { from: object.from, to: object.to } : null)),
+      onHover: !IS_TOUCH ? ({ object }) =>
+        dispatch(setHoveredArc(object ? { from: object.from, to: object.to } : null)) : undefined,
       onClick: ({ object }) => {
         if (object) dispatch(selectArc({ from: object.from, to: object.to }));
       },
@@ -163,14 +163,14 @@ export function useLayers({
       data: scatterData,
       getPosition: d => d.position,
       getRadius: d => {
-        const active = hoveredNodeKey === d.key || (selection?.type === 'base' && selection.key === d.key);
+        const active = (!IS_TOUCH && hoveredNodeKey === d.key) || (selection?.type === 'base' && selection.key === d.key);
         if (d.kind === 'base')   return active ? 7 : 5;
         if (d.kind === 'region') return active ? 8 : 6;
         return active ? 9 : 7;
       },
       getFillColor: d => {
         const isSel = selection?.type === 'base' && selection.key === d.key;
-        const isHov = hoveredNodeKey === d.key;
+        const isHov = !IS_TOUCH && hoveredNodeKey === d.key; // Adicionado !IS_TOUCH
         if (d.kind === 'region') return isHov || isSel ? COLORS.nodeRegionHov : COLORS.nodeRegion;
         if (d.kind === 'state')  return isHov || isSel ? COLORS.nodeStateHov  : COLORS.nodeState;
         if (isSel) return COLORS.nodeBaseSel;
@@ -179,7 +179,7 @@ export function useLayers({
       },
       getLineColor: d => {
         const isSel = selection?.type === 'base' && selection.key === d.key;
-        const isHov = hoveredNodeKey === d.key;
+        const isHov = !IS_TOUCH && hoveredNodeKey === d.key; // Adicionado !IS_TOUCH
         if (d.kind === 'region') return (isSel || isHov) ? [...COLORS.nodeRegionBorder.slice(0, 3), 255] : COLORS.nodeRegionBorder;
         if (d.kind === 'state')  return (isSel || isHov) ? [...COLORS.nodeStateBorder.slice(0, 3),  255] : COLORS.nodeStateBorder;
         return COLORS.nodeBorder;
@@ -208,7 +208,8 @@ export function useLayers({
       getSize:        d => d.kind === 'base' ? 10 : 12,
       getColor: d => {
         const isSel = selection?.type === 'base' && selection.key === d.key;
-        if (isSel || hoveredNodeKey === d.key) return COLORS.labelActive;
+        const isHov = !IS_TOUCH && hoveredNodeKey === d.key; // Adicionado !IS_TOUCH
+        if (isSel || isHov) return COLORS.labelActive;
         return COLORS.label;
       },
       fontFamily:     "monospace",

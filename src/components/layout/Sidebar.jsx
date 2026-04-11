@@ -170,12 +170,12 @@ const Sidebar = () => {
         <UserProfile />
       </div>
 
-      {isSidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-20 md:hidden transition-opacity"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+      <div
+        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-20 md:hidden transition-all duration-300 ${
+          isSidebarOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        }`}
+        onClick={() => setSidebarOpen(false)}
+      />
     </>
   );
 };

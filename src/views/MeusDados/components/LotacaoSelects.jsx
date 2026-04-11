@@ -25,7 +25,7 @@ function LotacaoSelects({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
-      <div className="relative z-50">
+      <div className="relative">
         <Label>Estado</Label>
         {isEditing ? (
           <div className="mt-1.5">
@@ -46,7 +46,7 @@ function LotacaoSelects({
         )}
       </div>
 
-      <div className="relative z-40">
+      <div className="relative">
         <Label>Região</Label>
         {isEditing ? (
           <div className="mt-1.5">
@@ -63,7 +63,7 @@ function LotacaoSelects({
         )}
       </div>
 
-      <div className="relative z-30">
+      <div className="relative">
         <Label>Base</Label>
         {isEditing ? (
           <div className="mt-1.5">

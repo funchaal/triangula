@@ -71,7 +71,7 @@ export default function App() {
     <div className="h-screen w-full bg-[#0B1437] text-white font-sans flex flex-col md:flex-row overflow-hidden">
       <Sidebar />
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-        <main className="flex-1 overflow-hidden h-full relative z-0">
+        <main className="flex-1 overflow-hidden h-full relative">
           <Outlet />
         </main>
       </div>

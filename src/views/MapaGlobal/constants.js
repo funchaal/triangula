@@ -19,9 +19,9 @@ export const COLORS = {
   nodeStateBorder: [185, 39, 230, 255],
 
   ripple: [255, 180, 255],
-  label:  [120, 120, 120, 255],
-  labelRegion: [120, 120, 120, 255],
-  labelState:  [120, 120, 120, 255],
+  label:  [120, 120, 120, 200],
+  labelRegion: [120, 120, 120, 200],
+  labelState:  [120, 120, 120, 200],
   labelActive: [255, 255, 255, 255],
 };
 

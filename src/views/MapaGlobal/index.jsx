@@ -94,24 +94,26 @@ function MapaGlobal() {
       {/* ── Header: título + botão desktop ───────────────────────────── */}
       <div className="absolute top-0 left-0 right-0 z-10 pl-4 pr-4 lg:pl-5 pt-5 pb-12 pointer-events-none flex items-start justify-between">
 
-            <div className="flex items-center gap-3 md:gap-4 pointer-events-auto">
-      {/* Container do Ícone: Menor no mobile (w-10) e padrão no desktop (md:w-12) */}
-      <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-        <Layers size={18} className="text-white md:hidden" /> {/* Ícone menor mobile */}
-        <Layers size={22} className="text-white hidden md:block" /> {/* Ícone padrão desktop */}
-      </div>
+          <div className="flex items-center gap-3 md:gap-3.5 pointer-events-auto">
+  {/* Container do Ícone: Reduzido de w-12 (48px) para w-11 (44px) no desktop */}
+  <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl md:rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+    <Layers size={18} className="text-white md:hidden" />
+    {/* Ícone desktop: Reduzido de 22 para 20 */}
+    <Layers size={20} className="text-white hidden md:block" /> 
+  </div>
 
-      <div className="flex flex-col">
-        {/* Título: text-sm no mobile */}
-        <h1 className="text-sm md:text-xl font-bold text-white tracking-wide drop-shadow-md leading-tight">
-          Mapa Global
-        </h1>
-        {/* Subtítulo: text-[9px] no mobile */}
-        <span className="text-[9px] md:text-xs text-[#A3AED0] font-bold tracking-widest uppercase">
-          Visão de Interesses
-        </span>
-      </div>
-    </div>
+  <div className="flex flex-col">
+    {/* Título: Reduzido de text-xl para text-lg no desktop */}
+    <h1 className="text-sm md:text-lg font-bold text-white tracking-wide drop-shadow-md leading-tight">
+      Mapa Global
+    </h1>
+    {/* Subtítulo: Mantido xs, mas com tracking ligeiramente menor se necessário */}
+    <span className="text-[9px] md:text-[10px] text-[#A3AED0] font-bold tracking-widest uppercase">
+      Visão de Interesses
+    </span>
+  </div>
+</div>
+
 
 
         {/* Botão Novo Interesse — visível apenas no desktop */}
@@ -130,7 +132,7 @@ function MapaGlobal() {
         <button
           type="button"
           onClick={() => navigate('/interests')}
-          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white px-6 py-3.5 rounded-2xl shadow-[0_4px_15px_rgba(59,130,246,0.25)] transition-all active:scale-95 font-semibold text-sm border-none"
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white px-6 py-3.5 rounded-2xl transition-all active:scale-95 font-semibold text-sm border-none"
         >
           <Plus size={18} strokeWidth={2.5} />
           <span>Cadastrar interesse</span>
