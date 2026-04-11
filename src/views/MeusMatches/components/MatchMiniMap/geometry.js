@@ -67,7 +67,8 @@ export function calcViewState(coords) {
 
   return {
     longitude: (Math.min(...lngs) + Math.max(...lngs)) / 2,
-    latitude:  (Math.min(...lats) + Math.max(...lats)) / 2,
+    // Deslocamento para o Norte proporcional à área visível (span)
+    latitude:  ((Math.min(...lats) + Math.max(...lats)) / 2) + (span * 1),
     zoom:      span < 1 ? 7.5 : span < 4 ? 5.5 : span < 8 ? 4.5 : 3.5,
     pitch:     45,
     bearing:   0,
