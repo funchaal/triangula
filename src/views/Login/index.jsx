@@ -54,7 +54,7 @@ export default function Login() {
     return (
       <div className="h-screen w-full bg-[#0B1437] flex items-center justify-center">
         <div className="flex flex-col items-center gap-5">
-          <LoadingTriangle size={48} />
+          <LoadingTriangle size={36} />
           <div className="text-[#A3AED0] text-sm font-bold uppercase tracking-widest animate-pulse mt-2">
             Iniciando Triangula...
           </div>

@@ -92,23 +92,33 @@ function MapaGlobal() {
       </DeckGL>
 
       {/* ── Header: título + botão desktop ───────────────────────────── */}
-      <div className="absolute top-0 left-0 right-0 z-10 pl-16 pr-4 lg:pl-6 pt-6 pb-12 pointer-events-none flex items-start justify-between">
+      <div className="absolute top-0 left-0 right-0 z-10 pl-4 pr-4 lg:pl-5 pt-5 pb-12 pointer-events-none flex items-start justify-between">
 
-        <div className="flex items-center gap-4 pointer-events-auto">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-            <Layers size={22} className="text-white" />
-          </div>
-          <div className="flex flex-col">
-            <h1 className="text-base md:text-xl font-bold text-white tracking-wide drop-shadow-md">Mapa Global</h1>
-            <span className="text-[11px] md:text-xs text-[#A3AED0] font-bold tracking-widest uppercase mt-0.5">Visão de Interesses</span>
-          </div>
-        </div>
+            <div className="flex items-center gap-3 md:gap-4 pointer-events-auto">
+      {/* Container do Ícone: Menor no mobile (w-10) e padrão no desktop (md:w-12) */}
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+        <Layers size={18} className="text-white md:hidden" /> {/* Ícone menor mobile */}
+        <Layers size={22} className="text-white hidden md:block" /> {/* Ícone padrão desktop */}
+      </div>
+
+      <div className="flex flex-col">
+        {/* Título: text-sm no mobile */}
+        <h1 className="text-sm md:text-xl font-bold text-white tracking-wide drop-shadow-md leading-tight">
+          Mapa Global
+        </h1>
+        {/* Subtítulo: text-[9px] no mobile */}
+        <span className="text-[9px] md:text-xs text-[#A3AED0] font-bold tracking-widest uppercase">
+          Visão de Interesses
+        </span>
+      </div>
+    </div>
+
 
         {/* Botão Novo Interesse — visível apenas no desktop */}
         <button
           type="button"
           onClick={() => navigate('/interests')}
-          className="pointer-events-auto hidden md:flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white px-5 py-3 mt-2 mr-2 rounded-xl transition-all font-semibold text-sm border-none"
+          className="pointer-events-auto hidden md:flex items-center gap-2 bg-blue-500 hover:bg-blue-400 text-white px-5 py-3 mt-1 mr-2 rounded-xl transition-all font-semibold text-sm border-none"
         >
           <Plus size={18} strokeWidth={2.5} />
           <span>Cadastrar interesse</span>

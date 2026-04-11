@@ -23,6 +23,8 @@ function MatchMiniMap({ match }) {
   const [progress, setProgress] = useState(0);
   const animRef  = useRef(null);
   const startRef = useRef(null);
+  
+  const [currentZoom, setCurrentZoom] = useState(5);
 
   useEffect(() => {
     setProgress(0);
@@ -62,6 +64,10 @@ function MatchMiniMap({ match }) {
     return { arcs, viewState: calcViewState(coords) };
   }, [match, locations]);
 
+  useEffect(() => {
+    if (viewState?.zoom) setCurrentZoom(viewState.zoom);
+  }, [viewState]);
+
   const layers = useMemo(() => buildLayers(arcs, progress), [arcs, progress]);
 
   // ── Estados vazios integrados à nova paleta ──────────────────────────────
@@ -93,6 +99,7 @@ function MatchMiniMap({ match }) {
         layers={layers}
         style={{ position: "absolute", inset: 0 }}
         getCursor={({ isDragging }) => isDragging ? 'grabbing' : 'grab'}
+        onViewStateChange={({ viewState: v }) => setCurrentZoom(v.zoom)}
       >
         <Map mapStyle={MAP_STYLE}>
           {match.chain.map((step, i) => {
@@ -113,6 +120,7 @@ function MatchMiniMap({ match }) {
                 isCurrentUser={isCurrentUser}
                 roles={roles}
                 workRegimes={workRegimes}
+                zoom={currentZoom}
               />
             );
           })}

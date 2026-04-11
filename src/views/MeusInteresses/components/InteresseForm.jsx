@@ -14,6 +14,7 @@ import LoadingTriangle from "../../../components/ui/LoadingTriangle";
 function InteresseForm({
   form, setForm, isEditing, isSaving, onSave, onCancel,
   stateOpts, filteredRegionsOpts, filteredBasesOpts, filteredRoles, filteredDeptsOpts, rtOpts, regimeOpts,
+  locations, regions,
 }) {
 
   const handleInterestState = (e) => {
@@ -23,11 +24,23 @@ function InteresseForm({
   };
 
   const handleInterestRegion = (val) => {
-    setForm(f => ({ ...f, target_base_id: ANY, target_region_id: val }));
+    const reg = regions?.[val];
+    setForm(f => ({
+      ...f,
+      target_base_id: ANY,
+      target_region_id: val,
+      target_state_id: val !== ANY && reg?.state_id != null ? String(reg.state_id) : ANY,
+    }));
   };
 
   const handleInterestBase = (val) => {
-    setForm(f => ({ ...f, target_base_id: val }));
+    const loc = locations?.[val];
+    setForm(f => ({
+      ...f,
+      target_base_id: val,
+      target_region_id: val !== ANY && loc?.region_id != null ? String(loc.region_id) : ANY,
+      target_state_id:  val !== ANY && loc?.state_id != null ? String(loc.state_id) : ANY,
+    }));
   };
 
   const handleTargetRoleTypeChange = (e) => {
@@ -52,8 +65,8 @@ function InteresseForm({
       </ButtonGhost>
       <ButtonPrimary
         onClick={onSave}
-        disabled={isSaving}
-        className="w-full sm:w-auto bg-blue-500 hover:bg-blue-400 shadow-[0_4px_15px_rgba(59,130,246,0.25)] border-none text-white rounded-xl justify-center transition-all"
+        disabled={isSaving || (form.target_state_id === ANY && form.target_region_id === ANY && form.target_base_id === ANY)}
+        className="w-full sm:w-auto bg-blue-500 hover:bg-blue-400 border-none text-white rounded-xl justify-center transition-all"
       >
         {isSaving ? <LoadingTriangle size={18} /> : <Check size={18} />}
         {isEditing ? 'Atualizar Interesse' : 'Salvar Interesse'}

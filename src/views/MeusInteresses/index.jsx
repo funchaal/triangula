@@ -136,24 +136,26 @@ function MeusInteresses() {
 
   return (
     // Fundo mais escuro (#0B1437) para contrastar com os cards (#111C44)
-    <div className="h-full flex flex-col bg-[#03072a] overflow-hidden">
+    <div className="h-full flex flex-col bg-[#03072a] overflow-hidden relative">
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Cabeçalho App-Style: sem border-bottom, maior espaçamento */}
-        <div className="pt-8 pb-4 pl-16 pr-6 lg:pl-8 shrink-0">
+        <div className="pt-6 sm:pt-8 pb-4 sm:pb-5 pl-5 pr-8 lg:pl-8 shrink-0">
           <div className="flex justify-between items-center h-full">
             <div>
               <h1 className="text-2xl lg:text-3xl font-bold text-white leading-none tracking-wide">
                 Meus Interesses
               </h1>
-              <div className="text-xs lg:text-sm text-[#A3AED0] mt-2 font-medium">
+              <div className="text-xs lg:text-sm text-[#A3AED0] mt-1 font-medium">
                 {interests.length} interesse{interests.length === 1 ? '' : 's'} cadastrado{interests.length === 1 ? '' : 's'}
               </div>
             </div>
+            
+            {/* Botão Desktop - Oculto no mobile (hidden md:flex) */}
             <ButtonPrimary
               onClick={handleNovoInteresse}
               disabled={showForm}
-              className="gap-2 px-4 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 border-none text-white shrink-0 disabled:opacity-50 whitespace-nowrap transition-all"
+              className="hidden md:flex gap-2 px-4 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 border-none text-white shrink-0 disabled:opacity-50 whitespace-nowrap transition-all"
             >
               <Plus size={18} className="shrink-0" />
               <span className="text-sm font-semibold">Novo Interesse</span>
@@ -182,6 +184,8 @@ function MeusInteresses() {
                 filteredDeptsOpts={filteredDeptsOpts}
                 rtOpts={rtOpts}
                 regimeOpts={regimeOpts}
+                locations={locations}
+                regions={regions}
               />
             )}
 
@@ -203,6 +207,16 @@ function MeusInteresses() {
           </div>
         </div>
       </div>
+
+      {/* Botão Flutuante Mobile - Exibido apenas no mobile (md:hidden) */}
+      <button
+        onClick={handleNovoInteresse}
+        disabled={showForm}
+        className="fixed bottom-6 right-6 z-50 md:hidden flex items-center justify-center w-14 h-14 bg-blue-500 hover:bg-blue-400 text-white rounded-full shadow-lg disabled:hidden transition-all focus:outline-none focus:ring-4 focus:ring-blue-500/50"
+        aria-label="Novo Interesse"
+      >
+        <Plus size={24} />
+      </button>
 
       <style>{`
         .scrollbar-custom::-webkit-scrollbar { width: 6px; }

@@ -126,13 +126,13 @@ function MeusDados() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Cabeçalho App-Style */}
-        <div className="pt-8 pb-4 pl-16 pr-6 lg:pl-8 shrink-0">
+        <div className="pt-6 sm:pt-8 pb-4 sm:pb-5 pl-5 pr-6 lg:pl-8 shrink-0">
           <div className="flex justify-between items-center h-full">
             <div>
               <h1 className="text-2xl lg:text-3xl font-bold text-white leading-none tracking-wide">
                 Meus Dados
               </h1>
-              <div className="text-xs lg:text-sm text-[#A3AED0] mt-2 font-medium">
+              <div className="text-xs lg:text-sm text-[#A3AED0] mt-1 font-medium">
                 Gerenciar seu perfil e lotação
               </div>
             </div>

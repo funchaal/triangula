@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LogIn, MoreHorizontal, LogOut, Menu, X, Triangle } from 'lucide-react';
+import { LogIn, MoreHorizontal, LogOut, Triangle } from 'lucide-react';
 import { NAV_ITEMS } from '../../constants';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { selectIsLoggedIn, selectUser, selectMatches } from '../../store/hooks';
@@ -143,30 +143,26 @@ const Sidebar = () => {
           <div className="text-[10px] text-[#A3AED0] tracking-widest uppercase mt-0.5">Sistema de Permuta</div>
         </div>
       </div>
-      <button
-        onClick={() => setSidebarOpen(false)}
-        className="md:hidden p-2 rounded-lg text-[#A3AED0] hover:bg-white/10 hover:text-white transition-colors"
-        title="Fechar menu"
-      >
-        <X size={20} />
-      </button>
     </div>
   );
 
   return (
     <>
-      {/* Botão de abrir menu ajustado: sem fundo, posicionado mais para baixo */}
+      {/* Botão Hambúrguer Animado */}
       <button
         onClick={() => setSidebarOpen(!isSidebarOpen)}
-        className="fixed top-7 left-3 z-20 md:hidden p-2 text-[#A3AED0]"
+        className="fixed top-8 right-6 z-40 md:hidden w-[25px] h-[14px] flex flex-col justify-center items-center cursor-pointer"
         title={isSidebarOpen ? "Fechar menu" : "Abrir menu"}
       >
-        <Menu size={26} />
+        <div className={`absolute w-[20px] min-h-[2px] rounded-[5px] transition-all duration-200 ${isSidebarOpen ? 'bg-white rotate-45 translate-y-0' : 'bg-[#cfdaff] -translate-y-[6px]'}`} />
+        <div className={`absolute w-[20px] min-h-[2px] rounded-[5px] transition-all duration-200 ${isSidebarOpen ? 'bg-white scale-0' : 'bg-[#cfdaff] scale-100'}`} />
+        <div className={`absolute w-[20px] min-h-[2px] rounded-[5px] transition-all duration-200 ${isSidebarOpen ? 'bg-white -rotate-45 translate-y-0' : 'bg-[#cfdaff] translate-y-[6px]'}`} />
       </button>
 
+      {/* Sidebar - Agora abre pela direita no mobile */}
       <div
-        className={`fixed inset-y-0 left-0 z-30 w-72 bg-[#111C44] flex flex-col transition-transform duration-300 ease-in-out md:relative md:translate-x-0 shadow-2xl md:shadow-none ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed inset-y-0 right-0 z-30 w-72 bg-[#111C44] flex flex-col transition-transform duration-300 ease-in-out md:left-0 md:right-auto md:relative md:translate-x-0 shadow-2xl md:shadow-none ${
+          isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <SidebarHeader />

@@ -75,7 +75,7 @@ function FormRegisterStep2({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
 
         {/* ── Bloco 1: Identificação ───────────────────────────────── */}
-        <div className="bg-[#0B1437] border border-white/5 rounded-2xl p-4 sm:p-6 space-y-4">
+        <div className="sm:bg-[#0B1437] sm:border sm:border-white/5 sm:rounded-2xl p-0 sm:p-6 space-y-4">
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#A3AED0] mb-2">Identificação</h3>
 
           <div className="space-y-1.5">
@@ -102,7 +102,7 @@ function FormRegisterStep2({
         </div>
 
         {/* ── Bloco 2: Lotação ─────────────────────────────────────── */}
-        <div className="bg-[#0B1437] border border-white/5 rounded-2xl p-4 sm:p-6 space-y-4">
+        <div className="sm:bg-[#0B1437] border-t border-t-1 border-t-white/15 sm:border sm:border-white/5 sm:rounded-2xl p-0 sm:p-6 space-y-4 pt-5">
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#A3AED0] mb-2">Sua Lotação Atual</h3>
 
           {/* Estado */}
@@ -148,7 +148,7 @@ function FormRegisterStep2({
       </div>
 
       {/* ── Bloco 3: Perfil Profissional ─────────────────────────────── */}
-      <div className="bg-[#0B1437] border border-white/5 rounded-2xl p-4 sm:p-6 space-y-4 relative z-20">
+      <div className="sm:bg-[#0B1437] border-t border-t-1 border-t-white/15 sm:border sm:border-white/5 sm:rounded-2xl p-0 sm:p-6 space-y-4 pt-5 relative z-20">
         <h3 className="text-[11px] font-bold uppercase tracking-widest text-[#A3AED0] mb-2">Perfil Profissional</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

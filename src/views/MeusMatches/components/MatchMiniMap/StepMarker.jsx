@@ -5,7 +5,10 @@
 import { Marker } from "react-map-gl/maplibre";
 import { ArrowRight, Phone, Mail, User } from "lucide-react";
 
-function StepMarker({ step, loc, nextLoc, nextStep, isCurrentUser, roles, workRegimes }) {
+function StepMarker({ step, loc, nextLoc, nextStep, isCurrentUser, roles, workRegimes, zoom }) {
+  
+  const scale = Math.max(0.4, Math.min(1, (zoom || 6) / 6));
+
   return (
     <Marker
       longitude={loc.coords[0]}
@@ -15,7 +18,14 @@ function StepMarker({ step, loc, nextLoc, nextStep, isCurrentUser, roles, workRe
       // "Você" fica no fundo (10), outros usuários ficam na frente (50)
       style={{ zIndex: isCurrentUser ? 10 : 50 }}
     >
-      <div className="flex flex-col items-center cursor-default group">
+      <div 
+        className="flex flex-col items-center cursor-default group"
+        style={{ 
+          transform: `scale(${scale})`, 
+          transformOrigin: 'bottom center',
+          transition: 'transform 0.1s ease-out'
+        }}
+      >
 
         {/* ── Card principal ────────────────────────────────────────── */}
         <div className={`

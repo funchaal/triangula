@@ -56,7 +56,7 @@ function MapSidebar({ selection, mapData, locations, regions, states, roles, wor
   const baseArcsOut = isBase ? mapData.filter(a => a.from === currentSelection?.key) : [];
   const baseArcsIn  = isBase ? mapData.filter(a => a.to   === currentSelection?.key) : [];
 
-  const sidebarClasses = `absolute top-0 right-0 h-full w-80 lg:w-[360px] bg-[#03072a] backdrop-blur-xl border-l border-white/5 flex flex-col z-20 shadow-[-5px_0_10px_rgba(0,0,0,0.2)] transition-transform duration-300 ease-in-out ${
+  const sidebarClasses = `absolute top-0 right-0 h-full w-80 lg:w-[360px] bg-[#03072a] backdrop-blur-xl border-l border-white/5 flex flex-col z-50 shadow-[-5px_0_10px_rgba(0,0,0,0.2)] transition-transform duration-300 ease-in-out ${
     selection ? 'translate-x-0' : 'translate-x-full'
   }`;
 
