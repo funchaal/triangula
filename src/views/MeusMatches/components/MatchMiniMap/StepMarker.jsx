@@ -56,7 +56,7 @@ function StepMarker({ step, loc, nextLoc, nextStep, isCurrentUser, roles, workRe
                 {isCurrentUser ? 'Você' : (step.name || step.username)}
               </p>
               {!isCurrentUser && step.name && (
-                <p className="text-[11px] font-medium text-slate-400 truncate mt-0.5" title={`@${step.username}`}>
+                <p className="text-[11px] font-medium text-slate-400 truncate mt-0" title={`@${step.username}`}>
                   @{step.username}
                 </p>
               )}
