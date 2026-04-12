@@ -2,7 +2,7 @@
 // components/MapSidebar/SidebarUserList.jsx — Lista de usuários de um arco ou base
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { Users, Loader2, FileText, Layers as LayersIcon } from "lucide-react";
+import { Users, Loader2, FileText, Layers as LayersIcon, Briefcase, Building2 } from "lucide-react";
 import LoadingTriangle from "../../../../components/ui/LoadingTriangle";
 
 /**
@@ -18,9 +18,11 @@ function lbl(dict, id) {
  * @param {boolean} isBase     - True se a seleção é um nó (base/região/estado)
  * @param {Array}   users      - Lista de usuários retornados pela API
  * @param {object}  roles      - Dicionário de cargos
+ * @param {object}  roleTypes  - Dicionário de tipos de cargo (técnico/superior)
  * @param {object}  workRegimes- Dicionário de regimes de trabalho
+ * @param {object}  departments- Dicionário de gerências/departamentos
  */
-function SidebarUserList({ isFetching, isBase, users, roles, workRegimes }) {
+function SidebarUserList({ isFetching, isBase, users, roles, roleTypes, workRegimes, departments }) {
   return (
     <>
       <div className="border-t border-white/5 mx-6 mb-4" />
@@ -36,58 +38,82 @@ function SidebarUserList({ isFetching, isBase, users, roles, workRegimes }) {
 
       ) : users.length > 0 ? (
         <div className="px-6 pb-6 space-y-3">
-          {users.map((u, i) => (
-            <div key={u.username ?? i} className="bg-[#111C44] rounded-2xl p-4">
+          {users.map((u, i) => {
+            const roleName = lbl(roles, u.role_id);
+            const roleLabel = typeof roleName === 'object' ? roleName?.name : roleName;
+            const typeLabel = lbl(roleTypes, u.role_type_id);
+            const deptLabel = lbl(departments, u.department_id);
+            const regimeLabel = lbl(workRegimes, u.regime_id);
 
-              {/* Avatar + nome + cargo */}
-              <div className="flex items-start gap-3 mb-2.5">
-                <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-400 shrink-0">
-                  {u.username?.slice(0, 2).toUpperCase() ?? '?'}
+            // Combina Cargo e Tipo de Cargo (ex: "Engenheiro • Superior")
+            const fullRole = [roleLabel, typeLabel].filter(Boolean).join(' • ');
+
+            return (
+              <div key={u.username ?? i} className="bg-[#13204c] rounded-2xl p-4">
+
+                {/* Avatar + Nome + Username */}
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-sm font-bold text-blue-400 shrink-0">
+                    {(u.name || u.username)?.slice(0, 2).toUpperCase() ?? '?'}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[13px] font-bold text-white truncate">{u.name || 'Sem nome'}</div>
+                    {u.username && (
+                      <div className="text-[11px] text-[#A3AED0] font-medium truncate mt-0.5">@{u.username}</div>
+                    )}
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0 pt-0.5">
-                  <div className="text-[13px] font-bold text-white truncate">{u.name || u.username}</div>
-                  {u.name && <div className="text-[11px] text-[#A3AED0] font-medium truncate">@{u.username}</div>}
-                  {lbl(roles, u.role_id) && (
-                    <div className="text-[11px] text-[#A3AED0]/80 truncate mt-0.5">
-                      {lbl(roles, u.role_id)?.name}
+
+                {/* Informações Profissionais */}
+                <div className="space-y-1.5 mb-4">
+                  {fullRole && (
+                    <div className="flex items-center gap-2 text-[11px] text-[#A3AED0]">
+                      <Briefcase size={12} className="shrink-0 text-blue-400/50" />
+                      <span className="truncate" title={fullRole}>{fullRole}</span>
+                    </div>
+                  )}
+
+                  {regimeLabel && (
+                    <div className="flex items-center gap-2 text-[11px] text-[#A3AED0]">
+                      <LayersIcon size={12} className="shrink-0 text-blue-400/50" />
+                      <span className="truncate" title={regimeLabel}>{regimeLabel}</span>
+                    </div>
+                  )}
+
+                  {deptLabel && (
+                    <div className="mt-2.5 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider bg-blue-500/10 text-blue-300 px-2 py-1 rounded-md max-w-full">
+                      <Building2 size={10} className="shrink-0" />
+                      <span className="truncate" title={deptLabel}>{deptLabel}</span>
                     </div>
                   )}
                 </div>
+
+                {/* Contatos */}
+                {(u.phone || u.email) && (
+                  <div className="text-[11px] text-white/90 mb-1 space-y-1 bg-[#0f193d] p-2.5 rounded-xl border border-white/5">
+                    {u.phone && (
+                      <div className="truncate">
+                        <span className="text-[#A3AED0] font-medium mr-1.5">Tel:</span>{u.phone}
+                      </div>
+                    )}
+                    {u.email && (
+                      <div className="truncate">
+                        <span className="text-[#A3AED0] font-medium mr-1.5">E-mail:</span>{u.email}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Observações */}
+                {u.observacoes && (
+                  <div className="flex items-start gap-1.5 mt-2 pt-2 border-t border-white/5">
+                    <FileText size={10} className="text-[#A3AED0]/50 mt-0.5 shrink-0" />
+                    <p className="text-[11px] text-[#A3AED0] leading-relaxed italic">"{u.observacoes}"</p>
+                  </div>
+                )}
               </div>
-
-              {/* Regime de trabalho */}
-              {lbl(workRegimes, u.regime_id) && (
-                <div className="text-[11px] font-medium text-[#A3AED0] mb-1.5 flex items-center gap-1.5">
-                  <LayersIcon size={10} className="shrink-0 text-[#A3AED0]/50" />
-                  {lbl(workRegimes, u.regime_id)}
-                </div>
-              )}
-
-              {/* Contatos */}
-              {(u.phone || u.email) && (
-                <div className="text-[11px] text-white/90 mb-1 space-y-1 bg-[#0B1437] p-2.5 rounded-xl border border-white/5">
-                  {u.phone && (
-                    <div className="truncate">
-                      <span className="text-[#A3AED0] font-medium mr-1.5">Tel</span>{u.phone}
-                    </div>
-                  )}
-                  {u.email && (
-                    <div className="truncate">
-                      <span className="text-[#A3AED0] font-medium mr-1.5">Email</span>{u.email}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Observações */}
-              {u.observacoes && (
-                <div className="flex items-start gap-1.5 mt-2 pt-2 border-t border-white/5">
-                  <FileText size={10} className="text-[#A3AED0]/50 mt-0.5 shrink-0" />
-                  <p className="text-[11px] text-[#A3AED0] leading-relaxed italic">"{u.observacoes}"</p>
-                </div>
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       ) : (

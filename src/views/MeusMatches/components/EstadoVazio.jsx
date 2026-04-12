@@ -6,7 +6,7 @@ import { Target } from 'lucide-react';
 
 function EstadoVazio() {
   return (
-    <div className="h-full flex items-center justify-center bg-[#0B1437]">
+    <div className="h-full flex items-center justify-center bg-[#03072a]">
       <div className="text-center px-8 max-w-sm animate-in fade-in zoom-in-95 duration-500">
         <div className="w-24 h-24 mx-auto mb-6 bg-white/5 rounded-3xl flex items-center justify-center border border-white/5 shadow-2xl">
           <Target size={40} className="text-[#A3AED0] opacity-50" />

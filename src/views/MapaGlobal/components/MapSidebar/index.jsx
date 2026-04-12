@@ -17,10 +17,12 @@ import SidebarUserList  from './SidebarUserList';
  * @param {object}      regions     - Dicionário de regiões
  * @param {object}      states      - Dicionário de estados
  * @param {object}      roles       - Dicionário de cargos
+ * @param {object}      role_types       - Dicionário de nível de cargo
+ * @param {object}      departments       - Dicionário de gerências
  * @param {object}      workRegimes - Dicionário de regimes de trabalho
  * @param {function}    onClose     - Callback para fechar a sidebar
  */
-function MapSidebar({ selection, mapData, locations, regions, states, roles, workRegimes, onClose }) {
+function MapSidebar({ selection, mapData, locations, regions, states, roles, roleTypes, departments, workRegimes, onClose }) {
   const [activeSelection, setActiveSelection] = useState(selection);
 
   useEffect(() => {
@@ -100,6 +102,8 @@ function MapSidebar({ selection, mapData, locations, regions, states, roles, wor
                 isBase={isBase}
                 users={users}
                 roles={roles}
+                roleTypes={roleTypes}
+                departments={departments}
                 workRegimes={workRegimes}
               />
             </div>

@@ -21,49 +21,52 @@ function InteresseCard({ interest, dicts, onDelete, isDeleting }) {
   const subtitulo = destSub(interest,   { locations, regions, states });
 
   return (
-    <div className="bg-[#13204c] rounded-2xl p-5 md:p-6 relative animate-in fade-in duration-300 group hover:border-white/10 transition-all">
-      <div className="flex gap-4 md:gap-5 w-full min-w-0">
+    // Redução do padding geral de p-5/md:p-6 para p-4/md:p-5
+    <div className="bg-[#13204c] rounded-2xl p-4 md:p-5 relative animate-in fade-in duration-300 group hover:border-white/10 transition-all">
+      {/* Redução do gap de gap-4/md:gap-5 para gap-3/md:gap-4 */}
+      <div className="flex gap-3 md:gap-4 w-full min-w-0">
 
-        {/* Ícone de localização */}
-        <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0">
-          <MapPin size={24} className="md:w-[26px] md:h-[26px]" />
+        {/* Ícone de localização ligeiramente menor (w-10/h-10) */}
+        <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0">
+          <MapPin size={20} className="md:w-6 md:h-6" />
         </div>
 
         <div className="min-w-0 flex-1">
           <div className="flex justify-between items-start gap-3">
 
             {/* Título e subtítulo do destino */}
-            <div className="min-w-0 mt-0.5">
-              <h3 className="text-lg md:text-xl font-bold text-white truncate leading-tight">
+            <div className="min-w-0">
+              {/* Título ajustado para base/lg */}
+              <h3 className="text-base md:text-lg font-bold text-white truncate leading-tight">
                 {titulo}
               </h3>
-              <p className="text-[11px] md:text-xs font-bold uppercase tracking-widest text-[#A3AED0] flex items-center gap-1.5 mt-1.5">
+              <p className="text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-[#A3AED0] flex items-center gap-1.5 mt-1">
                 {subtitulo || 'Localidade Ampla'}
               </p>
             </div>
 
-            {/* Botão de exclusão */}
+            {/* Botão de exclusão com padding reduzido */}
             <button
               onClick={() => onDelete(interest.id)}
               disabled={isDeleting}
-              className="p-2.5 md:p-3 text-red-400 hover:text-white bg-red-500/10 hover:bg-red-500/80 rounded-xl disabled:opacity-40 transition-all shrink-0"
+              className="p-2 md:p-2.5 text-red-400 hover:text-white bg-red-500/10 hover:bg-red-500/80 rounded-xl disabled:opacity-40 transition-all shrink-0"
               title="Excluir Interesse"
             >
               {isDeleting
-                ? <Loader2 size={18} className="animate-spin" />
-                : <Trash2  size={18} />
+                ? <Loader2 size={16} className="animate-spin" />
+                : <Trash2  size={16} />
               }
             </button>
           </div>
 
-          {/* Chips de perfil */}
+          {/* Chips de perfil (margem reduzida para mt-3) */}
           {chips.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4 md:mt-5">
+            <div className="flex flex-wrap gap-1.5 mt-3 md:mt-3.5">
               {chips.map((c, i) => (
                 <Badge
                   key={i}
                   variant={i === 0 || i === 1 ? 'primary' : 'default'}
-                  className={`text-[11px] md:text-xs px-2.5 py-1 rounded-lg border-none ${
+                  className={`text-[10px] md:text-[11px] px-2 py-0.5 rounded-md border-none ${
                     i === 0 || i === 1 ? 'bg-blue-500/20 text-blue-300' : 'bg-white/5 text-[#A3AED0]'
                   }`}
                 >
@@ -75,19 +78,19 @@ function InteresseCard({ interest, dicts, onDelete, isDeleting }) {
         </div>
       </div>
 
-      {/* Observações adicionais */}
+      {/* Observações adicionais (margens e paddings reduzidos) */}
       {interest.observacoes && (
-        <div className="mt-5 md:mt-6 p-4 bg-white/5 rounded-xl border border-white/5">
-          <Label className="text-[11px] md:text-xs text-[#A3AED0] uppercase tracking-wider">Observações</Label>
-          <p className="text-xs md:text-sm text-white/80 italic leading-relaxed mt-1.5">
+        <div className="mt-4 p-3 bg-white/5 rounded-xl border border-white/5">
+          <Label className="text-[10px] md:text-[11px] text-[#A3AED0] uppercase tracking-wider">Observações</Label>
+          <p className="text-xs text-white/80 italic leading-relaxed mt-1">
             "{interest.observacoes}"
           </p>
         </div>
       )}
 
-      {/* Indicador de radar ativo */}
-      <div className="mt-5 md:mt-6 pt-4 border-t border-white/5 flex items-center gap-3 text-[11px] md:text-xs font-bold uppercase tracking-widest text-emerald-400">
-        <span className="flex h-2 w-2 md:h-2.5 md:w-2.5 rounded-full bg-emerald-400 animate-pulse shrink-0 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+      {/* Indicador de radar ativo (margem superior reduzida) */}
+      <div className="mt-4 pt-3 border-t border-white/5 flex items-center gap-2 text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-emerald-400">
+        <span className="flex h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-emerald-400 animate-pulse shrink-0 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
         Radar de Match Ativo
       </div>
     </div>

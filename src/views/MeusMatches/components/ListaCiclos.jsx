@@ -17,9 +17,9 @@ function ListaCiclos({ matches }) {
     <div className="lg:w-[450px] shrink-0 flex flex-col border-b lg:border-b-0 lg:border-r border-white/5 z-10 shadow-[5px_0_30px_rgba(0,0,0,0.3)] lg:shadow-none">
 
       {/* Cabeçalho App-Style */}
-      <div className="pt-6 sm:pt-8 sm:pb-5 pl-5 pr-6 lg:pl-8 shrink-0 flex flex-col justify-center">
-        <h1 className="text-2xl lg:text-3xl font-bold text-white leading-none tracking-wide">Possíveis Matches</h1>
-        <div className="text-xs lg:text-sm text-[#A3AED0] mt-1 font-medium">
+      <div className="pt-6 sm:pt-6 sm:pb-5 pl-5 pr-6 lg:pl-8 shrink-0 flex flex-col justify-center">
+        <h1 className="text-2xl lg:text-2xl font-bold text-white leading-none tracking-wide">Possíveis Matches</h1>
+        <div className="text-xs lg:text-sm text-[#A3AED0] mt-0 font-medium">
           {matches.length} ciclo{matches.length !== 1 ? 's' : ''} encontrado{matches.length !== 1 ? 's' : ''}
         </div>
       </div>

@@ -126,13 +126,13 @@ function MeusDados() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Cabeçalho App-Style */}
-        <div className="pt-6 sm:pt-8 pb-4 sm:pb-5 pl-5 pr-6 lg:pl-8 shrink-0">
+        <div className="pt-6 sm:pt-6 pb-4 sm:pb-5 pl-5 pr-6 lg:pl-8 shrink-0">
           <div className="flex justify-between items-center h-full">
             <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-white leading-none tracking-wide">
+              <h1 className="text-2xl lg:text-2xl font-bold text-white leading-none tracking-wide">
                 Meus Dados
               </h1>
-              <div className="text-xs lg:text-sm text-[#A3AED0] mt-1 font-medium">
+              <div className="text-xs lg:text-sm text-[#A3AED0] mt-0 font-medium">
                 Gerenciar seu perfil e lotação
               </div>
             </div>
@@ -169,7 +169,7 @@ function MeusDados() {
               {/* ── Avatar + nome ─────────────────────────────────────── */}
               <div className="flex items-start justify-between gap-4 mb-8">
                 <div className="flex items-center gap-4 md:gap-5 flex-1 min-w-0">
-                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-xl md:text-2xl font-bold text-white shadow-[0_0_20px_rgba(59,130,246,0.3)] shrink-0">
+                  <div className="w-14 h-14 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-xl md:text-1xl font-bold text-white shrink-0">
                     {user?.username?.slice(0, 2).toUpperCase() ?? '?'}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -184,11 +184,11 @@ function MeusDados() {
                       </div>
                     ) : (
                       <>
-                        <h1 className="text-xl md:text-2xl font-bold text-white truncate">
-                          {user?.username ?? '—'}
-                        </h1>
-                        <p className="text-sm text-[#A3AED0] mt-1.5 truncate font-medium">
+                        <h1 className="text-xl md:text-xl font-bold text-white truncate">
                           {profile.name || <span className="text-[#A3AED0]/50 italic">Sem nome completo cadastrado</span>}
+                        </h1>
+                        <p className="text-sm text-[#A3AED0] mt-0 truncate font-medium">
+                          @{user?.username ?? '—'}
                         </p>
                       </>
                     )}

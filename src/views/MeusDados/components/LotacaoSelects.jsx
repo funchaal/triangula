@@ -17,11 +17,25 @@ function LotacaoSelects({
   const handleProfileState = (e) =>
     setProfile(f => ({ ...f, base_id: ANY, region_id: ANY, state_id: e.target.value }));
 
-  const handleProfileRegion = (val) =>
-    setProfile(f => ({ ...f, base_id: ANY, region_id: val }));
+  const handleProfileRegion = (val) => {
+    const reg = regions?.[val];
+    setProfile(f => ({
+      ...f,
+      base_id: ANY,
+      region_id: val,
+      state_id: val !== ANY && reg?.state_id != null ? String(reg.state_id) : ANY,
+    }));
+  };
 
-  const handleProfileBase = (val) =>
-    setProfile(f => ({ ...f, base_id: val }));
+  const handleProfileBase = (val) => {
+    const loc = locations?.[val];
+    setProfile(f => ({
+      ...f,
+      base_id: val,
+      region_id: val !== ANY && loc?.region_id != null ? String(loc.region_id) : ANY,
+      state_id: val !== ANY && loc?.state_id != null ? String(loc.state_id) : ANY,
+    }));
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">

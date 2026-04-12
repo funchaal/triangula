@@ -75,7 +75,7 @@ function InteresseForm({
   );
 
   return (
-    <div className="bg-[#111C44] rounded-3xl p-6 md:p-8 animate-in fade-in slide-in-from-top-4 duration-300 shadow-2xl">
+    <div className="bg-[#13204c] rounded-3xl p-6 md:p-8 animate-in fade-in slide-in-from-top-4 duration-300 shadow-2xl">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
         <div className="space-y-6">

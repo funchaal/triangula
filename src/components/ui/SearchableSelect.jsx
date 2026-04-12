@@ -59,7 +59,7 @@ export default function SearchableSelect({
       </div>
 
       {isOpen && !disabled && (
-        <div className="absolute z-[1] w-full mt-2 bg-[#1B254B] border border-white/10 rounded-xl shadow-2xl max-h-60 overflow-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
+        <div className="absolute z-[1] w-full mt-2 bg-[#0B1437] border border-white/10 rounded-xl shadow-2xl max-h-60 overflow-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20">
           <div
             className={`px-4 py-3 text-sm cursor-pointer hover:bg-blue-500 hover:text-white transition-colors ${String(value) === "0" ? 'bg-blue-500/20 text-white' : 'text-[#A3AED0]'}`}
             onClick={() => { onChange("0"); setIsOpen(false); }}

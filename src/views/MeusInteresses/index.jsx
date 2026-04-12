@@ -140,13 +140,13 @@ function MeusInteresses() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Cabeçalho App-Style: sem border-bottom, maior espaçamento */}
-        <div className="pt-6 sm:pt-8 pb-4 sm:pb-5 pl-5 pr-8 lg:pl-8 shrink-0">
+        <div className="pt-6 sm:pt-6 pb-4 sm:pb-5 pl-5 pr-8 lg:pl-8 shrink-0">
           <div className="flex justify-between items-center h-full">
             <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-white leading-none tracking-wide">
+              <h1 className="text-2xl lg:text-2xl font-bold text-white leading-none tracking-wide">
                 Meus Interesses
               </h1>
-              <div className="text-xs lg:text-sm text-[#A3AED0] mt-1 font-medium">
+              <div className="text-xs lg:text-sm text-[#A3AED0] mt-0 font-medium">
                 {interests.length} interesse{interests.length === 1 ? '' : 's'} cadastrado{interests.length === 1 ? '' : 's'}
               </div>
             </div>

@@ -16,6 +16,8 @@ import {
   selectMapData, selectLocations, selectRegions, selectStates,
   selectMapSelection, selectHoveredArc,
   selectRoles, selectWorkRegimes,
+  selectRoleTypes,
+  selectDepartments,
 } from '../../store/hooks';
 import { selectArc, selectBase, clearSelection, setHoveredArc } from '../../store/slices/globalSlice';
 
@@ -42,6 +44,8 @@ function MapaGlobal() {
   const selection   = useAppSelector(selectMapSelection);
   const hoveredArc  = useAppSelector(selectHoveredArc);
   const roles       = useAppSelector(selectRoles);
+  const roleTypes = useAppSelector(selectRoleTypes);
+  const departments = useAppSelector(selectDepartments);
   const workRegimes = useAppSelector(selectWorkRegimes);
 
   // Estado local de hover sobre nós (não precisa ir para a store)
@@ -147,6 +151,8 @@ function MapaGlobal() {
         regions={regions}
         states={states}
         roles={roles}
+        roleTypes={roleTypes}
+        departments={departments}
         workRegimes={workRegimes}
         onClose={() => dispatch(clearSelection())}
       />
