@@ -2,6 +2,8 @@
 // helpers.js — Funções utilitárias e constantes para a view MeusDados
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { validatePhoneNumber } from '../../components/ui/PhoneInput';
+
 export const ANY = "0";
 
 /** Estado inicial do perfil antes de carregar os dados do usuário */
@@ -88,7 +90,7 @@ export function profileFromUser(user) {
 export function isProfileValid(profile) {
   return (
     profile.name.trim()     !== '' &&
-    profile.phone.trim()    !== '' &&
+    validatePhoneNumber(profile.phone) &&
     profile.email.trim()    !== '' &&
     profile.user_key.trim().length === 4 &&
     String(profile.state_id)      !== ANY &&

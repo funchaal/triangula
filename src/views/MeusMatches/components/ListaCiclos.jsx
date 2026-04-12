@@ -19,7 +19,7 @@ function ListaCiclos({ matches }) {
       {/* Cabeçalho App-Style */}
       <div className="pt-6 sm:pt-6 sm:pb-5 pl-5 pr-6 lg:pl-8 shrink-0 flex flex-col justify-center">
         <h1 className="text-2xl lg:text-2xl font-bold text-white leading-none tracking-wide">Possíveis Matches</h1>
-        <div className="text-xs lg:text-sm text-[#A3AED0] mt-0 font-medium">
+        <div className="text-xs lg:text-sm text-[#A3AED0] mt-0.5 md:mt-0 font-medium">
           {matches.length} ciclo{matches.length !== 1 ? 's' : ''} encontrado{matches.length !== 1 ? 's' : ''}
         </div>
       </div>

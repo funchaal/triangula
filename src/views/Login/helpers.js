@@ -66,10 +66,6 @@ export function parseApiError(err, mode) {
   return 'Erro ao processar solicitação. Tente novamente.';
 }
 
-/** Classes Tailwind base para inputs no tema escuro da tela de login */
-export const INPUT_CLASSES =
-  "w-full bg-[#0B1437] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-[#111C44] transition-all placeholder:text-[#A3AED0]/50 disabled:opacity-50 disabled:cursor-not-allowed";
-
 /** Estilo inline para selects nativos com seta customizada no tema escuro */
 export const SELECT_ARROW_STYLE = {
   backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23A3AED0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,

@@ -1,26 +1,19 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// components/forms/FormLogin.jsx — Campos de usuário e senha para o modo login
+// components/forms/FormLogin.jsx
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { Eye, EyeOff } from 'lucide-react';
 import Label from '../../../../components/ui/Label';
-import { INPUT_CLASSES } from '../../helpers';
+import { PasswordInput } from '../PasswordInput';
+import Input from '../../../../components/ui/Input';
 
-/**
- * @param {object}   formData       - Estado do formulário
- * @param {function} handleChange   - Handler genérico de inputs
- * @param {boolean}  showPassword   - Visibilidade da senha
- * @param {function} setShowPassword- Toggle de visibilidade
- * @param {function} onForgot       - Callback para ir ao modo "esqueceu a senha"
- */
-function FormLogin({ formData, handleChange, showPassword, setShowPassword, onForgot }) {
+export function FormLogin({ formData, handleChange, showPassword, setShowPassword, onForgot }) {
   return (
     <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
 
       {/* Usuário */}
       <div className="space-y-1.5">
         <Label>Nome de usuário</Label>
-        <input
+        <Input
           required
           type="text"
           name="username"
@@ -28,7 +21,6 @@ function FormLogin({ formData, handleChange, showPassword, setShowPassword, onFo
           onChange={handleChange}
           autoComplete="username"
           placeholder="Ex: rafael.funchal"
-          className={INPUT_CLASSES}
         />
       </div>
 
@@ -50,35 +42,9 @@ function FormLogin({ formData, handleChange, showPassword, setShowPassword, onFo
           showPassword={showPassword}
           setShowPassword={setShowPassword}
           autoComplete="current-password"
+          showHint={false}
         />
       </div>
     </div>
   );
 }
-
-/** Campo de senha reutilizável com toggle de visibilidade */
-export function PasswordInput({ value, onChange, showPassword, setShowPassword, autoComplete = 'new-password' }) {
-  return (
-    <div className="relative">
-      <input
-        required
-        type={showPassword ? 'text' : 'password'}
-        name="password"
-        placeholder="••••••••"
-        value={value}
-        onChange={onChange}
-        autoComplete={autoComplete}
-        className={`${INPUT_CLASSES} pr-12 tracking-widest placeholder:tracking-normal`}
-      />
-      <button
-        type="button"
-        onClick={() => setShowPassword(v => !v)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A3AED0] hover:text-white transition-colors p-1"
-      >
-        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-      </button>
-    </div>
-  );
-}
-
-export default FormLogin;

@@ -1,92 +1,101 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// components/forms/FormForgot.jsx — Campo de usuário para recuperação de senha
-// ─────────────────────────────────────────────────────────────────────────────
-
-import Label from '../../../../components/ui/Label';
-import { INPUT_CLASSES } from '../../helpers';
-
-export function FormForgot({ formData, handleChange }) {
-  return (
-    <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
-      <p className="text-sm text-[#A3AED0] mb-2 leading-relaxed">
-        Digite seu nome de usuário abaixo. Enviaremos um link de recuperação para o seu e-mail cadastrado.
-      </p>
-      <div className="space-y-1.5">
-        <Label>Nome de usuário</Label>
-        <input
-          required
-          type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-          placeholder="Ex: rafael.funchal"
-          className={INPUT_CLASSES}
-        />
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// FormReset.jsx — Campo de nova senha para redefinição via token
-// ─────────────────────────────────────────────────────────────────────────────
-
-import { PasswordInput } from './FormLogin';
-
-export function FormReset({ formData, handleChange, showPassword, setShowPassword }) {
-  return (
-    <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
-      <div className="space-y-1.5">
-        <Label>Nova Senha</Label>
-        <PasswordInput
-          value={formData.password}
-          onChange={handleChange}
-          showPassword={showPassword}
-          setShowPassword={setShowPassword}
-        />
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // FormRegisterStep1.jsx — Usuário, e-mail, telefone e senha (passo 1 do registro)
 // ─────────────────────────────────────────────────────────────────────────────
 
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
-import { PasswordInput as PwdInput } from './FormLogin';
+import { useState, useRef, useEffect } from 'react';
+import { PasswordInput } from '../PasswordInput';
+import Label from '../../../../components/ui/Label';
+import FieldTag from '../../../../components/ui/FieldTag';
+import PhoneInput, { validatePhoneNumber } from '../../../../components/ui/PhoneInput';
+import Input from '../../../../components/ui/Input';
 
-export function FormRegisterStep1({ formData, setFormData, handleChange, showPassword, setShowPassword }) {
+const USERNAME_REGEX   = /^[a-zA-Z0-9._-]*$/;
+const MIN_PASSWORD_LEN = 4;
+const DEBOUNCE_MS      = 600;
+
+export function FormRegisterStep1({ formData, setFormData, handleChange, showPassword, setShowPassword, setStep1Valid }) {
+  const [usernameStatus, setUsernameStatus] = useState({ state: 'idle' });
+  const debounceTimer = useRef(null);
+  const checkedUsernames = useRef({});
+
+  useEffect(() => {
+    if (!setStep1Valid) return;
+    const isUsernameValid = usernameStatus.state === 'available';
+    const isEmailValid = !!formData.email && formData.email.includes('@');
+    const isPhoneValid = validatePhoneNumber(formData.phone);
+    const isPwdValid = !!formData.password && formData.password.length >= MIN_PASSWORD_LEN;
+    
+    setStep1Valid(isUsernameValid && isEmailValid && isPhoneValid && isPwdValid);
+  }, [usernameStatus.state, formData.email, formData.phone, formData.password, setStep1Valid]);
+
+  function handleUsernameChange(e) {
+    handleChange(e);
+    const value = e.target.value;
+
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+    if (!value)                      return setUsernameStatus({ state: 'idle' });
+    if (!USERNAME_REGEX.test(value)) return setUsernameStatus({ state: 'invalid' });
+    if (value.length < 3)            return setUsernameStatus({ state: 'idle' });
+
+    // Se já verificou esse username, usa o valor em cache e não bate na API
+    if (checkedUsernames.current[value] !== undefined) {
+      return setUsernameStatus({ state: checkedUsernames.current[value] ? 'available' : 'taken' });
+    }
+
+    setUsernameStatus({ state: 'checking' });
+    debounceTimer.current = setTimeout(async () => {
+      try {
+        const base = import.meta.env.VITE_API_URL ?? '';
+        const res  = await fetch(`${base}/auth/check-username?username=${encodeURIComponent(value)}`);
+        const data = await res.json();
+        
+        // Salva no cache
+        checkedUsernames.current[value] = data.available;
+        
+        setUsernameStatus({ state: data.available ? 'available' : 'taken' });
+      } catch {
+        setUsernameStatus({ state: 'idle' });
+      }
+    }, DEBOUNCE_MS);
+  }
+
+  const usernameTag = {
+    idle:      { type: 'hint',    message: 'Apenas letras, números, ponto, hífen e underline' },
+    checking:  { type: 'loading', message: 'Verificando disponibilidade...' },
+    available: { type: 'success', message: 'Username disponível' },
+    taken:     { type: 'error',   message: 'Este username já está em uso' },
+    invalid:   { type: 'error',   message: 'Apenas letras, números, ponto (.), hífen (-) e underline (_)' },
+  }[usernameStatus.state];
+
   return (
     <div className="space-y-5 animate-in fade-in slide-in-from-right-4 duration-300">
 
       {/* Usuário */}
       <div className="space-y-1.5">
         <Label>Nome de usuário</Label>
-        <input
+        <Input
           required
           type="text"
           name="username"
           value={formData.username}
-          onChange={handleChange}
+          onChange={handleUsernameChange}
           autoComplete="username"
           placeholder="Ex: rafael.funchal"
-          className={INPUT_CLASSES}
         />
+        <FieldTag {...usernameTag} className="mt-1.5" />
       </div>
 
       {/* E-mail */}
       <div className="space-y-1.5">
         <Label>E-mail pessoal</Label>
-        <input
+        <Input
           required
           type="email"
           name="email"
           placeholder="Ex: rafael@email.com"
           value={formData.email}
           onChange={handleChange}
-          className={INPUT_CLASSES}
         />
       </div>
 
@@ -94,22 +103,16 @@ export function FormRegisterStep1({ formData, setFormData, handleChange, showPas
       <div className="space-y-1.5">
         <Label>Telefone / Celular</Label>
         <PhoneInput
-          international
-          defaultCountry="BR"
           value={formData.phone}
           onChange={(value) => setFormData(f => ({ ...f, phone: value || '' }))}
-          placeholder="(22) 99999-9999"
-          numberInputProps={{
-            className: "bg-transparent text-sm text-white focus:outline-none placeholder:text-[#A3AED0]/50 w-full",
-            required:  true,
-          }}
+          required
         />
       </div>
 
       {/* Senha */}
       <div className="space-y-1.5">
         <Label>Senha</Label>
-        <PwdInput
+        <PasswordInput
           value={formData.password}
           onChange={handleChange}
           showPassword={showPassword}
@@ -117,6 +120,7 @@ export function FormRegisterStep1({ formData, setFormData, handleChange, showPas
           autoComplete="new-password"
         />
       </div>
+
     </div>
   );
 }

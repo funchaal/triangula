@@ -9,10 +9,8 @@ import Label    from '../../components/ui/Label';
 import Select   from '../../components/ui/Select';
 import Input    from '../../components/ui/Input';
 import { ButtonPrimary, ButtonGhost } from '../../components/ui/Button';
-import LoadingTriangle from '../../components/ui/LoadingTriangle';
 
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
+import PhoneInput from '../../components/ui/PhoneInput';
 
 import {
   useAppSelector,
@@ -40,7 +38,7 @@ import SectionTitle    from './components/SectionTitle';
 import ReadOnlyText    from './components/ReadOnlyText';
 import LotacaoSelects  from './components/LotacaoSelects';
 import PerfilSelects   from './components/PerfilSelects';
-import PhoneInputStyles from './components/PhoneInputStyles';
+import LoadingTriangle from "../../components/ui/LoadingTriangle";
 
 function MeusDados() {
   const user        = useAppSelector(selectUser);
@@ -121,7 +119,6 @@ function MeusDados() {
 
   return (
     <div className="h-full flex flex-col bg-[#03072a] overflow-hidden">
-      <PhoneInputStyles />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
@@ -132,7 +129,7 @@ function MeusDados() {
               <h1 className="text-2xl lg:text-2xl font-bold text-white leading-none tracking-wide">
                 Meus Dados
               </h1>
-              <div className="text-xs lg:text-sm text-[#A3AED0] mt-0 font-medium">
+              <div className="text-xs lg:text-sm text-[#A3AED0] mt-0.5 md:mt-0 font-medium">
                 Gerenciar seu perfil e lotação
               </div>
             </div>
@@ -164,7 +161,7 @@ function MeusDados() {
             <AlertaBanner />
 
             {/* Card principal */}
-            <div className="bg-[#111C44] rounded-3xl p-6 md:p-8 shadow-2xl">
+            <div className="bg-[#13204c] rounded-3xl p-6 md:p-8 shadow-2xl">
 
               {/* ── Avatar + nome ─────────────────────────────────────── */}
               <div className="flex items-start justify-between gap-4 mb-8">
@@ -345,7 +342,7 @@ function MeusDados() {
                     onChange={e => setProfile(f => ({ ...f, observations: e.target.value }))}
                     placeholder="Ex: Prefiro turno administrativo..."
                     rows={4}
-                    className="w-full bg-[#0B1437] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-[#111C44] transition-all resize-none placeholder:text-[#A3AED0]/50 mt-1.5"
+                    className="w-full bg-[#0B1437] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all resize-none placeholder:text-[#A3AED0]/50 mt-1.5"
                   />
                 ) : (
                   <div className="w-full bg-[#0B1437] border border-white/10 rounded-xl px-5 py-4 text-sm text-white/90 min-h-[90px] whitespace-pre-wrap mt-1.5 italic leading-relaxed">
@@ -369,7 +366,7 @@ function MeusDados() {
             disabled={isSavingProfile || !profileIsDirty || !profileValido}
             className="flex-1 justify-center disabled:opacity-40"
           >
-            {isSavingProfile ? <Loader2 size={16} className="animate-spin" /> : <Check size={16} />}
+            {isSavingProfile ? <LoadingTriangle size={18} /> : <Check size={16} />}
             Salvar
           </ButtonPrimary>
         </div>

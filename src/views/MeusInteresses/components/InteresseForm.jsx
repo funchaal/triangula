@@ -177,7 +177,7 @@ function InteresseForm({
           onChange={e => setForm(f => ({ ...f, observacoes: e.target.value }))}
           placeholder="Ex: Apenas unidades de terra..."
           rows={3}
-          className="w-full bg-[#0B1437] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 focus:bg-[#111C44] transition-all resize-none placeholder:text-[#A3AED0]/50 mt-1"
+          className="w-full bg-[#0B1437] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all resize-none placeholder:text-[#A3AED0]/50 mt-1"
         />
       </div>
 

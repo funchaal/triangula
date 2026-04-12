@@ -18,12 +18,13 @@ import LoginBackground  from './components/LoginBackground';
 import LoginHeader      from './components/LoginHeader';
 import StepIndicator    from './components/StepIndicator';
 import StatusToast      from './components/StatusToast';
-import PhoneInputStyles from './components/PhoneInputStyles';
 import FormActions      from './components/actions/FormActions';
 
 // Formulários por modo/etapa
-import FormLogin                          from './components/forms/FormLogin';
-import { FormForgot, FormReset, FormRegisterStep1 } from './components/forms/FormRegisterStep1';
+import { FormLogin } from './components/forms/FormLogin';
+import { FormForgot } from './components/forms/FormForgot';
+import { FormReset } from './components/forms/FormReset';
+import { FormRegisterStep1 } from './components/forms/FormRegisterStep1';
 import FormRegisterStep2                  from './components/forms/FormRegisterStep2';
 
 export default function Login() {
@@ -68,7 +69,6 @@ export default function Login() {
 
   return (
     <div className="min-h-screen w-full bg-[#0B1437] flex flex-col items-center justify-center p-4 py-8 md:py-12 font-sans selection:bg-blue-500/30 overflow-x-hidden overflow-y-auto relative z-0">
-      <PhoneInputStyles />
       <LoginBackground />
 
       <LoginHeader mode={form.mode} />
@@ -115,6 +115,7 @@ export default function Login() {
                 handleChange={form.handleChange}
                 showPassword={form.showPassword}
                 setShowPassword={form.setShowPassword}
+                setStep1Valid={form.setStep1Valid}
               />
             )}
 
@@ -136,6 +137,7 @@ export default function Login() {
                 mode={form.mode}
                 registerStep={form.registerStep}
                 isLoading={form.isLoading}
+                step1Valid={form.step1Valid}
                 step2Valid={form.step2Valid}
                 onBack={() => form.setRegisterStep(1)}
                 onGoToLogin={form.goToLogin}

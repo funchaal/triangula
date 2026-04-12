@@ -13,7 +13,7 @@ import LoadingTriangle from '../../../../components/ui/LoadingTriangle';
  * @param {function} onBack       - Callback para voltar ao passo 1
  * @param {function} onGoToLogin  - Callback para voltar ao modo login (no forgot)
  */
-function FormActions({ mode, registerStep, isLoading, step2Valid, onBack, onGoToLogin }) {
+function FormActions({ mode, registerStep, isLoading, step1Valid, step2Valid, onBack, onGoToLogin }) {
 
   // ── Esqueceu a senha ──────────────────────────────────────────────────────
   if (mode === 'forgot') {
@@ -41,7 +41,8 @@ function FormActions({ mode, registerStep, isLoading, step2Valid, onBack, onGoTo
     return (
       <button
         type="submit"
-        className="w-full bg-blue-500 hover:bg-blue-400 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2"
+        disabled={!step1Valid}
+        className="w-full bg-blue-500 hover:bg-blue-400 disabled:bg-white/5 disabled:text-[#A3AED0]/50 text-white font-bold h-12 rounded-xl text-sm transition-all flex items-center justify-center gap-2 disabled:shadow-none"
       >
         Continuar <ArrowRight size={18} />
       </button>

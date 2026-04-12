@@ -48,6 +48,7 @@ export function useLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [status,       setStatus]       = useState({ type: null, message: '' });
   const [formData,     setFormData]     = useState(EMPTY_FORM);
+  const [step1Valid,   setStep1Valid]   = useState(false);
 
   // ── Handlers de campo genérico ────────────────────────────────────────────
 
@@ -183,12 +184,13 @@ export function useLoginForm() {
     // Estado
     mode, registerStep, showPassword, status, formData, isLoading, resetToken,
     // Setters simples
-    setFormData, setRegisterStep, setShowPassword,
+    setFormData, setRegisterStep, setShowPassword, setStep1Valid,
     // Handlers
     handleChange, handleProfileBase, handleProfileRegion,
     handleProfileState, handleRoleTypeChange,
     handleSubmit, switchMode, goToForgot, goToLogin,
     // Derivados
+    step1Valid,
     step2Valid: isStep2Valid(formData),
   };
 }

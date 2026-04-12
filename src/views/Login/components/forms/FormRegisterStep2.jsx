@@ -4,7 +4,9 @@
 
 import Label           from '../../../../components/ui/Label';
 import SearchableSelect from '../../../../components/ui/SearchableSelect';
-import { INPUT_CLASSES, SELECT_ARROW_STYLE, ANY } from '../../helpers';
+import Input from '../../../../components/ui/Input';
+import Select from '../../../../components/ui/Select';
+import { ANY } from '../../helpers';
 import { useAppSelector, selectLocations, selectDepartments, selectWorkRegimes, selectRoles, selectRoleTypes, selectRegions, selectStates } from '../../../../store/hooks';
 
 /**
@@ -80,23 +82,23 @@ function FormRegisterStep2({
 
           <div className="space-y-1.5">
             <Label>Nome Completo</Label>
-            <input required name="name" value={formData.name} onChange={handleChange}
-              placeholder="Ex: Rafael Funchal" className={INPUT_CLASSES} />
+            <Input required name="name" value={formData.name} onChange={handleChange}
+              placeholder="Ex: Rafael Funchal" />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <Label>Chave</Label>
-              <input required name="user_key" value={formData.user_key} onChange={handleChange}
-                maxLength={4} placeholder="Ex: CM0E" className={INPUT_CLASSES} />
+              <Input required name="user_key" value={formData.user_key} onChange={handleChange}
+                maxLength={4} placeholder="Ex: CM0E" />
             </div>
             <div className="space-y-1.5">
               <Label>Status</Label>
-              <select style={SELECT_ARROW_STYLE} name="state" value={formData.state}
-                onChange={handleChange} className={INPUT_CLASSES}>
+              <Select name="state" value={formData.state}
+                onChange={handleChange}>
                 <option className="bg-[#1B254B] text-white" value="permuta">Permuta</option>
                 <option className="bg-[#1B254B] text-white" value="liberado">Liberado</option>
-              </select>
+              </Select>
             </div>
           </div>
         </div>
@@ -108,15 +110,14 @@ function FormRegisterStep2({
           {/* Estado */}
           <div className="space-y-1.5 relative">
             <Label>Estado</Label>
-            <select style={SELECT_ARROW_STYLE} name="state_id" value={formData.state_id}
+            <Select name="state_id" value={formData.state_id}
               onChange={handleProfileState}
-              disabled={formData.base_id !== ANY || formData.region_id !== ANY}
-              className={INPUT_CLASSES}>
+              disabled={formData.base_id !== ANY || formData.region_id !== ANY}>
               <option className="bg-[#1B254B] text-white" value={ANY}>- Selecione -</option>
               {stateOpts.sort((a, b) => a[1].name.localeCompare(b[1].name)).map(([id, s]) => (
                 <option className="bg-[#1B254B] text-white" key={id} value={id}>{s.name}</option>
               ))}
-            </select>
+            </Select>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -214,7 +215,7 @@ function FormRegisterStep2({
             onChange={handleChange}
             placeholder="Ex: Prefiro turno administrativo, disponibilidade para embarque..."
             rows={2}
-            className={`${INPUT_CLASSES} resize-none`}
+            className="w-full bg-[#0B1437] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500 transition-all placeholder:text-[#A3AED0]/50 disabled:opacity-50 disabled:cursor-not-allowed resize-none"
           />
         </div>
       </div>

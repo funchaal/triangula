@@ -83,6 +83,20 @@ export const api = createApi({
       }),
     }),
 
+        /**
+     * GET /api/auth/check-username?username=rafael
+     * Verifica se um username está disponível antes do registro.
+     * Endpoint público — não requer token.
+     *
+     * Response: { available: boolean }
+     */
+    checkUsername: builder.query({
+      query: (username) => ({
+        url: '/auth/check-username',
+        params: { username },
+      }),
+    }),
+
     // ── Privado (requer Bearer Token) ─────────────────────────────────────────
 
     /**
@@ -168,6 +182,7 @@ export const {
   useAddMetadataMutation,
   useRestoreSessionMutation,
   useRegisterMutation,
+  useLazyCheckUsernameQuery,
   useDeleteinterestMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,

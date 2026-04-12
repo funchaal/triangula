@@ -146,7 +146,7 @@ function MeusInteresses() {
               <h1 className="text-2xl lg:text-2xl font-bold text-white leading-none tracking-wide">
                 Meus Interesses
               </h1>
-              <div className="text-xs lg:text-sm text-[#A3AED0] mt-0 font-medium">
+              <div className="text-xs lg:text-sm text-[#A3AED0] mt-0.5 md:mt-0 font-medium">
                 {interests.length} interesse{interests.length === 1 ? '' : 's'} cadastrado{interests.length === 1 ? '' : 's'}
               </div>
             </div>
