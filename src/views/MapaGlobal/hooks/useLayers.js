@@ -16,11 +16,11 @@ const IS_TOUCH = typeof window !== 'undefined' && window.matchMedia('(pointer: c
 
 // Largura da hitbox invisível dos arcos em pixels.
 // No mobile o dedo é ~10-15px, então 44px cobre bem sem conflitar com nós vizinhos.
-const ARC_HITBOX_WIDTH = IS_TOUCH ? 44 : 18;
+const ARC_HITBOX_WIDTH = IS_TOUCH ? 44 : 28;
 
 // Raio mínimo de toque para os nós em pixels (Apple HIG recomenda 44px de área).
 // O nó visual permanece pequeno; só a hitbox invisível é maior.
-const NODE_TOUCH_RADIUS = IS_TOUCH ? 22 : 0; // 0 = desabilitado no desktop
+const NODE_HOVER_RADIUS = IS_TOUCH ? 22 : 12; // 0 = desabilitado no desktop
 
 /**
  * Constrói as camadas deck.gl reativas ao estado de animação e seleção.
@@ -144,18 +144,20 @@ export function useLayers({
 
     // Hitbox invisível dos nós — só existe no mobile.
     // Garante área de toque mínima de ~44px sem alterar o visual dos nós.
-    ...(IS_TOUCH ? [new ScatterplotLayer({
-      id: "node-touch-hitbox",
-      data: scatterData,
-      getPosition:  d => d.position,
-      getRadius:    NODE_TOUCH_RADIUS,
-      getFillColor: [0, 0, 0, 0],
-      radiusUnits:  "pixels",
-      pickable:     true,
-      stroked:      false,
-      parameters:   { depthTest: false },
-      onClick: ({ object }) => { if (object) dispatch(selectBase(object.key)); },
-    })] : []),
+    new ScatterplotLayer({
+  id: "node-touch-hitbox",
+  data: scatterData,
+  getPosition:  d => d.position,
+  getRadius:    NODE_HOVER_RADIUS,
+  getFillColor: [0, 0, 0, 0],
+  radiusUnits:  "pixels",
+  pickable:     true,
+  stroked:      false,
+  parameters:   { depthTest: false },
+  onClick: ({ object }) => { if (object) dispatch(selectBase(object.key)); },
+  // Hover no desktop via hitbox (mais fácil de acertar)
+  onHover: !IS_TOUCH ? ({ object }) => setHoveredNodeKey(object?.key ?? null) : undefined,
+}),
 
     // Nós visuais (bases, regiões, estados) — tamanho visual inalterado
     new ScatterplotLayer({
