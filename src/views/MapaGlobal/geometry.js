@@ -29,14 +29,26 @@ export function perpNormal(src, tgt) {
   return [-dy / len, dx / len];
 }
 
-export function buildArcPoints(src, tgt, offsetAmount = 0) {
+export function buildArcPoints(src, tgt, offsetFraction = 0.1) {
   const [px, py] = perpNormal(src, tgt);
+  
+  // Distância geográfica em graus (para escalar o offset proporcionalmente)
+  const dx = tgt[0] - src[0], dy = tgt[1] - src[1];
+  const distDeg = Math.sqrt(dx * dx + dy * dy);
+  
+  // Offset proporcional à distância — evita curva exagerada em rotas curtas
+  const offsetAmount = distDeg * offsetFraction;
+
   const pts = [];
   for (let i = 0; i <= ARC_STEPS; i++) {
     const t = i / ARC_STEPS;
     const [lng, lat, alt] = greatCirclePoint(src, tgt, t);
     const bulge = Math.sin(t * Math.PI);
-pts.push([lng + px * offsetAmount * bulge, lat + py * offsetAmount * bulge, alt]);
+    pts.push([
+      lng + px * offsetAmount * bulge,
+      lat + py * offsetAmount * bulge,
+      alt,
+    ]);
   }
   return pts;
 }

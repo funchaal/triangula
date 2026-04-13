@@ -100,6 +100,7 @@ function MapSidebar({ selection, mapData, locations, regions, states, roles, rol
               <SidebarUserList
                 isFetching={isFetching}
                 isBase={isBase}
+                selection={currentSelection}
                 users={users}
                 roles={roles}
                 roleTypes={roleTypes}

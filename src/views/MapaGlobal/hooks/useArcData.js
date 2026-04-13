@@ -43,11 +43,13 @@ export function useArcData(mapData, locations, regions, states) {
       const localCycle    = hasRev ? CYCLE_DURATION : ACTIVE_DURATION + 1000;
       const phase         = basePhase + reverseOffset;
 
+      const offsetSide = (hasRev && a.from > a.to) ? -0.01 : 0.01;
+
       return {
         ...a,
         phaseOffset: phase,
         localCycle,
-        arcPoints: buildArcPoints(src, tgt, 0.1),
+        arcPoints: buildArcPoints(src, tgt, offsetSide),
       };
     }).filter(Boolean);
   }, [mapData, locations, regions, states]);

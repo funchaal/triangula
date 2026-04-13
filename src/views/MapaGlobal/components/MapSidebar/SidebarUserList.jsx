@@ -4,6 +4,7 @@
 
 import { Users, Loader2, FileText, Layers as LayersIcon, Briefcase, Building2 } from "lucide-react";
 import LoadingTriangle from "../../../../components/ui/LoadingTriangle";
+import { nodeType } from '../../helpers';
 
 /**
  * Retorna o nome/valor de um item do dicionário pelo id, ou null.
@@ -16,18 +17,22 @@ function lbl(dict, id) {
 /**
  * @param {boolean} isFetching - True enquanto os dados estão carregando
  * @param {boolean} isBase     - True se a seleção é um nó (base/região/estado)
+ * @param {object}  selection  - A seleção atual do mapa
  * @param {Array}   users      - Lista de usuários retornados pela API
  * @param {object}  roles      - Dicionário de cargos
  * @param {object}  roleTypes  - Dicionário de tipos de cargo (técnico/superior)
  * @param {object}  workRegimes- Dicionário de regimes de trabalho
  * @param {object}  departments- Dicionário de gerências/departamentos
  */
-function SidebarUserList({ isFetching, isBase, users, roles, roleTypes, workRegimes, departments }) {
+function SidebarUserList({ isFetching, isBase, selection, users, roles, roleTypes, workRegimes, departments }) {
+  const nType = isBase && selection?.key ? nodeType(selection.key) : null;
+  const baseLabel = nType === 'region' ? 'Pessoas nesta região' : nType === 'state' ? 'Pessoas neste estado' : 'Pessoas nesta base';
+
   return (
     <>
       <div className="border-t border-white/5 mx-6 mb-4" />
       <div className="text-[10px] font-bold uppercase tracking-widest text-[#A3AED0]/70 mb-3 mx-6">
-        {isBase ? 'Pessoas nesta base' : 'Pessoas nesta rota'}
+        {isBase ? baseLabel : 'Pessoas nesta rota'}
       </div>
 
       {/* Estado de carregamento */}
