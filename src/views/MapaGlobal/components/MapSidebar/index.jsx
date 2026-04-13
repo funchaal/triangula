@@ -3,7 +3,7 @@
 // Orquestra as queries de API e compõe os sub-componentes de stats e usuários
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useGetArcUsersQuery, useGetBaseUsersQuery } from '../../../../services/api';
 import SidebarHeader    from './SidebarHeader';
 import SidebarArcStats  from './SidebarArcStats';
@@ -55,8 +55,31 @@ function MapSidebar({ selection, mapData, locations, regions, states, roles, rol
     : null;
 
   // ── Dados derivados para base ─────────────────────────────────────────────
-  const baseArcsOut = isBase ? mapData.filter(a => a.from === currentSelection?.key) : [];
-  const baseArcsIn  = isBase ? mapData.filter(a => a.to   === currentSelection?.key) : [];
+  const childBaseKeys = useMemo(() => {
+  if (!isBase || !currentSelection?.key) return [];
+  const key = currentSelection.key;
+
+  if (key.startsWith('base:')) return [key];
+
+  if (key.startsWith('region:')) {
+    const regionId = key.slice(7);
+    return Object.entries(locations)
+      .filter(([, loc]) => loc.region_id === regionId)
+      .map(([id]) => `base:${id}`);
+  }
+
+  if (key.startsWith('state:')) {
+    const stateId = key.slice(6);
+    return Object.entries(locations)
+      .filter(([, loc]) => loc.state_id === stateId)
+      .map(([id]) => `base:${id}`);
+  }
+
+    return [];
+  }, [isBase, currentSelection?.key, locations]);
+
+  const baseArcsOut = isBase ? mapData.filter(a => childBaseKeys.includes(a.from)) : [];
+  const baseArcsIn  = isBase ? mapData.filter(a => childBaseKeys.includes(a.to))   : [];
 
   const sidebarClasses = `absolute top-0 right-0 h-full w-80 lg:w-[360px] bg-[#03072a] backdrop-blur-xl border-l border-white/5 flex flex-col z-50 shadow-[-5px_0_10px_rgba(0,0,0,0.2)] transition-transform duration-300 ease-in-out ${
     selection ? 'translate-x-0' : 'translate-x-full'
