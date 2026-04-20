@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LogIn, MoreHorizontal, LogOut, Triangle } from 'lucide-react';
-import { NAV_ITEMS } from '../../constants';
+import { navItems as NAV_ITEMS } from '../../routes/index.jsx';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { selectIsLoggedIn, selectUser, selectMatches } from '../../store/hooks';
 import { logout } from '../../store/slices/authSlice';

@@ -9,7 +9,7 @@ import { nodeType, resolveLabel } from '../../helpers';
  * @param {object}   selection - Seleção atual (arc ou base)
  * @param {object}   locations - Dicionário de bases
  * @param {object}   regions   - Dicionário de regiões
- * @param {object}   states    - Dicionário de estados
+ * @param {object}   states    - Dicionário de estados / bacias
  * @param {function} onClose   - Callback para fechar a sidebar
  */
 function SidebarHeader({ selection, locations, regions, states, onClose }) {
@@ -21,16 +21,16 @@ function SidebarHeader({ selection, locations, regions, states, onClose }) {
   const toLabel   = isArc  ? resolveLabel(selection.to,   locations, regions, states) : null;
   const nodeLabel = isBase ? resolveLabel(selection.key,  locations, regions, states) : null;
 
-  // Cor do badge de tipo varia conforme região, estado ou base
+  // Cor do badge de tipo varia conforme região, estado / bacia ou base
   const typeColor = nType === 'region' ? 'text-amber-400' : nType === 'state' ? 'text-blue-400' : 'text-indigo-400';
-  const typeLabel = nType === 'region' ? 'Região' : nType === 'state' ? 'Estado' : 'Base';
+  const typeLabel = nType === 'region' ? 'Região' : nType === 'state' ? 'Estado / Bacia' : 'Base';
 
   return (
     <div className="px-6 pt-6 pb-5 border-b border-white/5 shrink-0">
       <div className="flex items-start justify-between">
         <div className="flex-1 min-w-0">
 
-          {/* ── Seleção de nó (base / região / estado) ── */}
+          {/* ── Seleção de nó (base / região / estado / bacia) ── */}
           {isBase && (
             <>
               <div className={`text-[11px] font-bold uppercase tracking-widest mb-2 flex items-center gap-1.5 ${typeColor}`}>

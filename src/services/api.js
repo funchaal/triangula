@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const api = createApi({
   reducerPath: 'api',
+  tagTypes: ['AdminStates', 'AdminRegions', 'AdminLocations'],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_URL,
     // Injeta Bearer Token automaticamente em toda requisição
@@ -169,6 +170,160 @@ export const api = createApi({
         body,
       }),
     }),
+
+    // ── Admin ─────────────────────────────────────────────────────────────────
+
+    getAdminStates: builder.query({
+      query: () => '/admin/states',
+      providesTags: ['AdminStates'],
+    }),
+    createAdminState: builder.mutation({
+      query: (body) => ({ url: '/admin/states', method: 'POST', body }),
+      invalidatesTags: ['AdminStates'],
+    }),
+    updateAdminState: builder.mutation({
+      query: ({ id, ...body }) => ({ url: `/admin/states/${id}`, method: 'PUT', body }),
+      invalidatesTags: ['AdminStates'],
+    }),
+    deleteAdminState: builder.mutation({
+      query: (id) => ({ url: `/admin/states/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['AdminStates'],
+    }),
+
+    getAdminRegions: builder.query({
+      query: () => '/admin/regions',
+      providesTags: ['AdminRegions'],
+    }),
+    createAdminRegion: builder.mutation({
+      query: (body) => ({ url: '/admin/regions', method: 'POST', body }),
+      invalidatesTags: ['AdminRegions'],
+    }),
+    updateAdminRegion: builder.mutation({
+      query: ({ id, ...body }) => ({ url: `/admin/regions/${id}`, method: 'PUT', body }),
+      invalidatesTags: ['AdminRegions'],
+    }),
+    deleteAdminRegion: builder.mutation({
+      query: (id) => ({ url: `/admin/regions/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['AdminRegions'],
+    }),
+
+    getAdminLocations: builder.query({
+      query: () => '/admin/locations',
+      providesTags: ['AdminLocations'],
+    }),
+    createAdminLocation: builder.mutation({
+      query: (body) => ({ url: '/admin/locations', method: 'POST', body }),
+      invalidatesTags: ['AdminLocations'],
+    }),
+    updateAdminLocation: builder.mutation({
+      query: ({ id, ...body }) => ({ url: `/admin/locations/${id}`, method: 'PUT', body }),
+      invalidatesTags: ['AdminLocations'],
+    }),
+    deleteAdminLocation: builder.mutation({
+      query: (id) => ({ url: `/admin/locations/${id}`, method: 'DELETE' }),
+      invalidatesTags: ['AdminLocations'],
+    }),
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Adicione estes endpoints ao seu createApi existente em services/api.js
+    // (dentro do bloco `endpoints: (builder) => ({  ...  })`)
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    // ── Tipos de Cargo (role_types) ───────────────────────────────────────────────
+    getAdminRoleTypes: builder.query({
+      query: () => "/admin/role-types",
+      providesTags: ["AdminRoleTypes"],
+    }),
+    createAdminRoleType: builder.mutation({
+      query: (body) => ({ url: "/admin/role-types", method: "POST", body }),
+      invalidatesTags: ["AdminRoleTypes"],
+    }),
+    updateAdminRoleType: builder.mutation({
+      query: ({ id, ...body }) => ({ url: `/admin/role-types/${id}`, method: "PUT", body }),
+      invalidatesTags: ["AdminRoleTypes"],
+    }),
+    deleteAdminRoleType: builder.mutation({
+      query: (id) => ({ url: `/admin/role-types/${id}`, method: "DELETE" }),
+      invalidatesTags: ["AdminRoleTypes", "AdminRoles"],
+    }),
+
+    // ── Cargos (roles) ────────────────────────────────────────────────────────────
+    getAdminRoles: builder.query({
+      query: () => "/admin/roles",
+      providesTags: ["AdminRoles"],
+    }),
+    createAdminRole: builder.mutation({
+      query: (body) => ({ url: "/admin/roles", method: "POST", body }),
+      invalidatesTags: ["AdminRoles"],
+    }),
+    updateAdminRole: builder.mutation({
+      query: ({ id, ...body }) => ({ url: `/admin/roles/${id}`, method: "PUT", body }),
+      invalidatesTags: ["AdminRoles"],
+    }),
+    deleteAdminRole: builder.mutation({
+      query: (id) => ({ url: `/admin/roles/${id}`, method: "DELETE" }),
+      invalidatesTags: ["AdminRoles"],
+    }),
+
+    // ─────────────────────────────────────────────────────────────────────────────
+// Adicione estes endpoints ao seu createApi existente em services/api.js
+// (dentro do bloco `endpoints: (builder) => ({  ...  })`)
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── Tipos de Cargo (role_types) ───────────────────────────────────────────────
+getAdminRoleTypes: builder.query({
+  query: () => "/admin/role-types",
+  providesTags: ["AdminRoleTypes"],
+}),
+createAdminRoleType: builder.mutation({
+  query: (body) => ({ url: "/admin/role-types", method: "POST", body }),
+  invalidatesTags: ["AdminRoleTypes"],
+}),
+updateAdminRoleType: builder.mutation({
+  query: ({ id, ...body }) => ({ url: `/admin/role-types/${id}`, method: "PUT", body }),
+  invalidatesTags: ["AdminRoleTypes"],
+}),
+deleteAdminRoleType: builder.mutation({
+  query: (id) => ({ url: `/admin/role-types/${id}`, method: "DELETE" }),
+  invalidatesTags: ["AdminRoleTypes", "AdminRoles"],
+}),
+
+// ── Cargos (roles) ────────────────────────────────────────────────────────────
+getAdminRoles: builder.query({
+  query: () => "/admin/roles",
+  providesTags: ["AdminRoles"],
+}),
+createAdminRole: builder.mutation({
+  query: (body) => ({ url: "/admin/roles", method: "POST", body }),
+  invalidatesTags: ["AdminRoles"],
+}),
+updateAdminRole: builder.mutation({
+  query: ({ id, ...body }) => ({ url: `/admin/roles/${id}`, method: "PUT", body }),
+  invalidatesTags: ["AdminRoles"],
+}),
+deleteAdminRole: builder.mutation({
+  query: (id) => ({ url: `/admin/roles/${id}`, method: "DELETE" }),
+  invalidatesTags: ["AdminRoles"],
+}),
+
+// ── Departamentos ─────────────────────────────────────────────────────────────
+getAdminDepartments: builder.query({
+  query: () => "/admin/departments",
+  providesTags: ["AdminDepartments"],
+}),
+createAdminDepartment: builder.mutation({
+  query: (body) => ({ url: "/admin/departments", method: "POST", body }),
+  invalidatesTags: ["AdminDepartments"],
+}),
+updateAdminDepartment: builder.mutation({
+  query: ({ id, ...body }) => ({ url: `/admin/departments/${id}`, method: "PUT", body }),
+  invalidatesTags: ["AdminDepartments"],
+}),
+deleteAdminDepartment: builder.mutation({
+  query: (id) => ({ url: `/admin/departments/${id}`, method: "DELETE" }),
+  invalidatesTags: ["AdminDepartments"],
+}),
+
   }),
 })
 
@@ -186,4 +341,28 @@ export const {
   useDeleteinterestMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useGetAdminStatesQuery,
+  useCreateAdminStateMutation,
+  useUpdateAdminStateMutation,
+  useDeleteAdminStateMutation,
+  useGetAdminRegionsQuery,
+  useCreateAdminRegionMutation,
+  useUpdateAdminRegionMutation,
+  useDeleteAdminRegionMutation,
+  useGetAdminLocationsQuery,
+  useCreateAdminLocationMutation,
+  useUpdateAdminLocationMutation,
+  useDeleteAdminLocationMutation,
+  useGetAdminRoleTypesQuery,
+  useCreateAdminRoleTypeMutation,
+  useUpdateAdminRoleTypeMutation,
+  useDeleteAdminRoleTypeMutation,
+  useGetAdminRolesQuery,
+  useCreateAdminRoleMutation,
+  useUpdateAdminRoleMutation,
+  useDeleteAdminRoleMutation, 
+  useGetAdminDepartmentsQuery,
+  useCreateAdminDepartmentMutation,
+  useUpdateAdminDepartmentMutation,
+  useDeleteAdminDepartmentMutation
 } = api

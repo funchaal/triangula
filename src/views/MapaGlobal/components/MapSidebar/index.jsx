@@ -15,7 +15,7 @@ import SidebarUserList  from './SidebarUserList';
  * @param {Array}       mapData     - Todos os arcos do mapa
  * @param {object}      locations   - Dicionário de bases
  * @param {object}      regions     - Dicionário de regiões
- * @param {object}      states      - Dicionário de estados
+ * @param {object}      states      - Dicionário de estados / bacias
  * @param {object}      roles       - Dicionário de cargos
  * @param {object}      role_types       - Dicionário de nível de cargo
  * @param {object}      departments       - Dicionário de gerências

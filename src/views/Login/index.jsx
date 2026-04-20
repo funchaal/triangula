@@ -4,7 +4,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import LoadingTriangle from '../../components/ui/LoadingTriangle';
 import { useInitQuery, useRestoreSessionMutation } from '../../services/api';
@@ -29,6 +29,7 @@ import FormRegisterStep2                  from './components/forms/FormRegisterS
 
 export default function Login() {
   const navigate   = useNavigate();
+  const location   = useLocation();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
   const { isLoading: initLoading } = useInitQuery();
@@ -42,10 +43,13 @@ export default function Login() {
     }
   }, [restoreSession, isLoggedIn]);
 
-  // Redireciona ao home após login bem-sucedido
+  // Redireciona após login bem-sucedido
   useEffect(() => {
-    if (isLoggedIn) navigate('/');
-  }, [isLoggedIn, navigate]);
+    if (isLoggedIn) {
+      const from = location.state?.from?.pathname || '/';
+      navigate(from, { replace: true });
+    }
+  }, [isLoggedIn, navigate, location.state]);
 
   // ── Hook principal ────────────────────────────────────────────────────────
   const form = useLoginForm();

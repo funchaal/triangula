@@ -40,7 +40,7 @@ function LotacaoSelects({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
       <div className="relative">
-        <Label>Estado</Label>
+        <Label>Estado / Bacia</Label>
         {isEditing ? (
           <div className="mt-1.5">
             <Select

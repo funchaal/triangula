@@ -11,7 +11,7 @@ import { resolveLabel } from '../../helpers';
  * @param {Array}  baseArcsIn  - Arcos chegando ao nó selecionado
  * @param {object} locations   - Dicionário de bases
  * @param {object} regions     - Dicionário de regiões
- * @param {object} states      - Dicionário de estados
+ * @param {object} states      - Dicionário de estados / bacias
  */
 function SidebarBaseStats({ baseArcsOut, baseArcsIn, locations, regions, states }) {
   const hasMoves = baseArcsOut.length > 0 || baseArcsIn.length > 0;

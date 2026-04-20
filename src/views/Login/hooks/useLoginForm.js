@@ -60,9 +60,9 @@ export function useLoginForm() {
     setFormData(f => ({ ...f, [name]: value }));
   };
 
-  // ── Handlers de localização (estado > região > base em cascata) ───────────
+  // ── Handlers de localização (estado / bacia > região > base em cascata) ───────────
 
-  /** Selecionar base preenche região e estado automaticamente */
+  /** Selecionar base preenche região e estado / bacia automaticamente */
   const handleProfileBase = (val) => {
     const loc = locations[val];
     setFormData(f => ({
@@ -73,7 +73,7 @@ export function useLoginForm() {
     }));
   };
 
-  /** Selecionar região preenche estado e limpa base */
+  /** Selecionar região preenche estado / bacia e limpa base */
   const handleProfileRegion = (val) => {
     const reg = regions[val];
     setFormData(f => ({
@@ -84,7 +84,7 @@ export function useLoginForm() {
     }));
   };
 
-  /** Selecionar estado limpa região e base */
+  /** Selecionar estado / bacia limpa região e base */
   const handleProfileState = (e) => {
     setFormData(f => ({ ...f, base_id: ANY, region_id: ANY, state_id: e.target.value }));
   };
@@ -135,10 +135,12 @@ export function useLoginForm() {
     setStatus({ type: null, message: '' });
 
     try {
+      const from = location.state?.from?.pathname || '/';
+
       if (mode === 'login') {
         await login({ username: formData.username, password: formData.password }).unwrap();
         setStatus({ type: 'success', message: 'Login realizado! Redirecionando...' });
-        setTimeout(() => navigate('/'), 800);
+        setTimeout(() => navigate(from, { replace: true }), 800);
 
       } else if (mode === 'register') {
         await register({
@@ -159,7 +161,7 @@ export function useLoginForm() {
           observations:  formData.observations,
         }).unwrap();
         setStatus({ type: 'success', message: 'Conta criada com sucesso! Bem-vindo ao Triangula.' });
-        setTimeout(() => navigate('/'), 800);
+        setTimeout(() => navigate(from, { replace: true }), 800);
 
       } else if (mode === 'forgot') {
         await forgotPassword({ username: formData.username }).unwrap();

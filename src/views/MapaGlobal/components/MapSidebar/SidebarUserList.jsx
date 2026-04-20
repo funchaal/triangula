@@ -16,7 +16,7 @@ function lbl(dict, id) {
 
 /**
  * @param {boolean} isFetching - True enquanto os dados estão carregando
- * @param {boolean} isBase     - True se a seleção é um nó (base/região/estado)
+ * @param {boolean} isBase     - True se a seleção é um nó (base/região/estado / bacia)
  * @param {object}  selection  - A seleção atual do mapa
  * @param {Array}   users      - Lista de usuários retornados pela API
  * @param {object}  roles      - Dicionário de cargos
@@ -26,7 +26,7 @@ function lbl(dict, id) {
  */
 function SidebarUserList({ isFetching, isBase, selection, users, roles, roleTypes, workRegimes, departments }) {
   const nType = isBase && selection?.key ? nodeType(selection.key) : null;
-  const baseLabel = nType === 'region' ? 'Pessoas nesta região' : nType === 'state' ? 'Pessoas neste estado' : 'Pessoas nesta base';
+  const baseLabel = nType === 'region' ? 'Pessoas nesta região' : nType === 'state' ? 'Pessoas neste(a) estado / bacia' : 'Pessoas nesta base';
 
   return (
     <>

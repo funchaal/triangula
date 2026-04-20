@@ -30,7 +30,7 @@ export function lbl(dict, id) {
 
 /**
  * Retorna o label de destino principal de um interesse.
- * Prioridade: base > região > estado > genérico.
+ * Prioridade: base > região > estado / bacia > genérico.
  */
 export function destLabel(interest, { locations, regions, states }) {
   if (interest.target_base_id && interest.target_base_id !== ANY)
@@ -40,7 +40,7 @@ export function destLabel(interest, { locations, regions, states }) {
     return `Região ${regions[interest.target_region_id]?.name ?? interest.target_region_id}`;
 
   if (interest.target_state_id && interest.target_state_id !== ANY)
-    return `Estado ${states[interest.target_state_id]?.name ?? interest.target_state_id}`;
+    return `Estado / Bacia ${states[interest.target_state_id]?.name ?? interest.target_state_id}`;
 
   return 'Qualquer localidade';
 }

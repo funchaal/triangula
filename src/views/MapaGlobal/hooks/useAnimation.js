@@ -43,7 +43,7 @@ export function useAnimation(arcData) {
         wasHoldingRef.current[key] = isHolding;
       });
 
-      // Acrescenta novos ripples ao estado
+      // Acrescenta novos ripples ao estado / bacia
       if (Object.keys(newRipples).length > 0) {
         setRipples(prev => {
           const next = { ...prev };

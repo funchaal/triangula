@@ -83,13 +83,13 @@ function InteresseForm({
           <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
 
             <div className="min-w-0 relative">
-              <Label className="text-[#A3AED0]">Estado</Label>
+              <Label className="text-[#A3AED0]">Estado / Bacia</Label>
               <Select
                 value={form.target_state_id}
                 onChange={handleInterestState}
                 disabled={form.target_base_id !== ANY || form.target_region_id !== ANY}
               >
-                <option value={ANY}>Qualquer estado</option>
+                <option value={ANY}>Qualquer estado / bacia</option>
                 {stateOpts
                   .sort((a, b) => a[1].name.localeCompare(b[1].name))
                   .map(([id, s]) => <option key={id} value={id}>{s.name}</option>)

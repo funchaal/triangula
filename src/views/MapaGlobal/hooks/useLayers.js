@@ -159,7 +159,7 @@ export function useLayers({
   onHover: !IS_TOUCH ? ({ object }) => setHoveredNodeKey(object?.key ?? null) : undefined,
 }),
 
-    // Nós visuais (bases, regiões, estados) — tamanho visual inalterado
+    // Nós visuais (bases, regiões, estados / bacias) — tamanho visual inalterado
     new ScatterplotLayer({
       id: "nodes",
       data: scatterData,
