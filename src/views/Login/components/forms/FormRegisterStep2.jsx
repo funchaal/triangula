@@ -2,12 +2,15 @@
 // components/forms/FormRegisterStep2.jsx — Identificação, lotação e perfil (passo 2 do registro)
 // ─────────────────────────────────────────────────────────────────────────────
 
-import Label           from '../../../../components/ui/Label';
+import Label            from '../../../../components/ui/Label';
 import SearchableSelect from '../../../../components/ui/SearchableSelect';
-import Input from '../../../../components/ui/Input';
-import Select from '../../../../components/ui/Select';
+import Input            from '../../../../components/ui/Input';
+import Select           from '../../../../components/ui/Select';
 import { ANY } from '../../helpers';
-import { useAppSelector, selectLocations, selectDepartments, selectWorkRegimes, selectRoles, selectRoleTypes, selectRegions, selectStates } from '../../../../store/hooks';
+import {
+  useAppSelector, selectLocations, selectDepartments, selectWorkRegimes,
+  selectRoles, selectRoleTypes, selectRegions, selectStates,
+} from '../../../../store/hooks';
 
 /**
  * @param {object}   formData             - Estado atual do formulário
@@ -34,9 +37,9 @@ function FormRegisterStep2({
 
   // ── Opções filtradas para os selects ────────────────────────────────────
 
-  const stateOpts  = Object.entries(states  || {});
+  const stateOpts  = Object.entries(states     || {});
   const regimeOpts = Object.entries(workRegimes || {});
-  const rtOpts     = Object.entries(roleTypes || {});
+  const rtOpts     = Object.entries(roleTypes   || {});
 
   const filteredRegionsOpts = Object.entries(regions || {})
     .filter(([, r]) => formData.state_id === ANY || String(r.state_id) === String(formData.state_id))
@@ -94,8 +97,7 @@ function FormRegisterStep2({
             </div>
             <div className="space-y-1.5">
               <Label>Status</Label>
-              <Select name="state" value={formData.state}
-                onChange={handleChange}>
+              <Select name="state" value={formData.state} onChange={handleChange}>
                 <option className="bg-[#1B254B] text-white" value="permuta">Permuta</option>
                 <option className="bg-[#1B254B] text-white" value="liberado">Liberado</option>
               </Select>
@@ -109,7 +111,7 @@ function FormRegisterStep2({
 
           {/* Estado / Bacia */}
           <div className="space-y-1.5 relative">
-            <Label>Estado / Bacia</Label>
+            <Label>Estado</Label>
             <Select name="state_id" value={formData.state_id}
               onChange={handleProfileState}
               disabled={formData.base_id !== ANY || formData.region_id !== ANY}>
@@ -129,7 +131,6 @@ function FormRegisterStep2({
                 value={formData.region_id}
                 onChange={handleProfileRegion}
                 disabled={formData.base_id !== ANY}
-                inputClassName={INPUT_CLASSES}
                 placeholder="- Selecione -"
               />
             </div>
@@ -140,7 +141,6 @@ function FormRegisterStep2({
                 options={filteredBasesOpts}
                 value={formData.base_id}
                 onChange={handleProfileBase}
-                inputClassName={INPUT_CLASSES}
                 placeholder="- Selecione -"
               />
             </div>
@@ -156,15 +156,14 @@ function FormRegisterStep2({
           {/* Nível */}
           <div className="space-y-1.5 relative flex flex-col justify-end h-full">
             <Label>Nível</Label>
-            <select style={SELECT_ARROW_STYLE} name="role_type_id" value={formData.role_type_id}
-              onChange={handleRoleTypeChange} className={INPUT_CLASSES}>
+            <Select name="role_type_id" value={formData.role_type_id} onChange={handleRoleTypeChange}>
               <option className="bg-[#1B254B] text-white" value={ANY}>- Selecione -</option>
               {rtOpts.map(([id, n]) => (
                 <option className="bg-[#1B254B] text-white" key={id} value={id}>
                   {typeof n === 'string' ? n : n?.name}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
 
           {/* Cargo */}
@@ -175,7 +174,6 @@ function FormRegisterStep2({
               onChange={(val) => setFormData(f => ({ ...f, role_id: val }))}
               options={filteredRoles}
               placeholder={formData.role_type_id === ANY ? 'Selecione o nível...' : 'Buscar cargo...'}
-              inputClassName={INPUT_CLASSES}
             />
           </div>
 
@@ -187,22 +185,20 @@ function FormRegisterStep2({
               onChange={(val) => setFormData(f => ({ ...f, department_id: val }))}
               options={filteredDeptsOpts}
               placeholder="- Selecione -"
-              inputClassName={INPUT_CLASSES}
             />
           </div>
 
           {/* Regime */}
           <div className="space-y-1.5 relative flex flex-col justify-end h-full">
             <Label>Regime</Label>
-            <select style={SELECT_ARROW_STYLE} name="regime_id" value={formData.regime_id}
-              onChange={handleChange} className={INPUT_CLASSES}>
+            <Select name="regime_id" value={formData.regime_id} onChange={handleChange}>
               <option className="bg-[#1B254B] text-white" value={ANY}>- Selecione -</option>
               {regimeOpts.map(([id, n]) => (
                 <option className="bg-[#1B254B] text-white" key={id} value={id}>
                   {typeof n === 'string' ? n : n?.name}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
         </div>
 
