@@ -83,7 +83,7 @@ const Sidebar = () => {
     <div className="p-4 border-t border-white/10">
       {isLoggedIn && user ? (
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-xs font-bold text-white shrink-0 shadow-lg shadow-blue-500/20">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-xs font-bold text-white shrink-0">
             {initials}
           </div>
           <div className="flex-1 overflow-hidden min-w-0">
