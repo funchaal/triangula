@@ -132,7 +132,7 @@ function MapaGlobal() {
       </div>
 
       {/* ── Botão Novo Interesse — mobile (fixado acima da nav) ──────── */}
-      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 md:hidden pointer-events-auto w-max">
+      <div className="absolute bottom-24 right-4 z-20 md:hidden pointer-events-auto w-max shadow-lg shadow-blue-500/20 rounded-2xl">
         <button
           type="button"
           onClick={() => navigate('/interests')}
